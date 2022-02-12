@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+
+<body id="matching">
+    <header></header>
+    <main>
+
+        <article>
+            <figure>
+                <picture>
+                    <!-- profile picture -->
+                    <source type="image/webp" srcset="images/base-image-profile.webp" />
+                    <source type="image/png" srcset="images/base-image-profile.png" />
+                    <img src="images/base-image-profile.png" alt="" />
+                </picture>
+
+                <figcaption>
+                    <!-- lvl -->
+                    <p>5</p>
+                    <section>
+                        <!-- tags -->
+                        <p>Rogue</p>
+                        <p>Fire</p>
+                    </section>
+                </figcaption>
+            </figure>
+            
+            <section>
+                <section>
+                    <h2>Char name</h2>
+                    <h3>Real name</h3>
+                    <p>10km</p>
+                </section>
+                <!-- like button -->
+                <button type="button" id="likeBtn">
+                    <img src="images/base-heart.svg" alt="">
+                </button>
+            </section>
+        </article>
+
+    </main>
     <script src="js/script.js"></script>
 </body>
+
 </html>
