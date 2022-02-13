@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/sasjakoning/blok-tech-2022#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mongodb": "^4.3.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
