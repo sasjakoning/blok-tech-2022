@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "CMD blok tech 2022",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon js/script.js"
+    "start": "nodemon script.js",
+    "convert": "node webp.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,9 @@
   },
   "homepage": "https://github.com/sasjakoning/blok-tech-2022#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "imagemin": "^8.0.1",
+    "imagemin-webp": "^7.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
