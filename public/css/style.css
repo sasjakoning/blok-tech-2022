@@ -133,7 +133,7 @@ nav > ul > li:active {
 
 body > section {
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(2, 48%);
 	gap: 1em;
 	width: 100%;
 	padding: 1em;
@@ -247,10 +247,6 @@ body > section {
 	background-color: var(--detail-red);
 	z-index: -1;
 	opacity: .2;
-}
-
-.playerInfo h2 {
-	word-wrap: break-all;
 }
 
 .playerInfo > p {

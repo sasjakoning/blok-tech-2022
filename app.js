@@ -22,23 +22,31 @@ users = () => {
   return [
     {
       name: 'Katarina',
-      realName: 'midlaner'
+      realName: 'Katy Johnson'
     },
     {
-      name: 'Jayce',
-      realName: 'toplaner'
+      name: 'Gollum',
+      realName: 'Rick Smith'
     },
     {
-      name: 'Heimerdinger',
-      realName: 'toplaner'
+      name: 'Deathbringer',
+      realName: 'Eric Paul'
     },
     {
-      name: 'Zed',
-      realName: 'midlaner'
+      name: 'Butterfy Lily',
+      realName: 'Sarah Burger'
     },
     {
       name: 'Azir',
-      realName: 'midlaner'
+      realName: 'Micheal Beach'
+    },
+    {
+      name: 'Azir',
+      realName: 'Micheal Beach'
+    },
+    {
+      name: 'Azir',
+      realName: 'Micheal Beach'
     }
   ];
 }
