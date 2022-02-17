@@ -1,3 +1,5 @@
+{{#each users}}
+
 <article class="card">
     <!-- Card -->
     <figure>
@@ -19,8 +21,8 @@
 
         <figcaption>
             <div class="playerInfo">
-                <h2>Char name</h2>
-                <h3>Real name</h3>
+                <h2>{{this.name}}</h2>
+                <h3>{{this.realName}}</h3>
                 <p>10km</p>
             </div>
 
@@ -30,3 +32,5 @@
         </figcaption>
     </figure>
 </article>
+
+{{/each}}

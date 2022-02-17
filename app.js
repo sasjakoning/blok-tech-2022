@@ -18,33 +18,33 @@ app.engine(
 
 app.use(express.static("public"));
 
-// fakeApi = () => {
-//   return [
-//     {
-//       name: "Katarina",
-//       lane: "midlaner",
-//     },
-//     {
-//       name: "Jayce",
-//       lane: "toplaner",
-//     },
-//     {
-//       name: "Heimerdinger",
-//       lane: "toplaner",
-//     },
-//     {
-//       name: "Zed",
-//       lane: "midlaner",
-//     },
-//     {
-//       name: "Azir",
-//       lane: "midlaner",
-//     },
-//   ];
-// };
+users = () => {
+  return [
+    {
+      name: 'Katarina',
+      realName: 'midlaner'
+    },
+    {
+      name: 'Jayce',
+      realName: 'toplaner'
+    },
+    {
+      name: 'Heimerdinger',
+      realName: 'toplaner'
+    },
+    {
+      name: 'Zed',
+      realName: 'midlaner'
+    },
+    {
+      name: 'Azir',
+      realName: 'midlaner'
+    }
+  ];
+}
 
 app.get("/", (req, res) => {
-  res.render("main", { layout: "index"});
+  res.render("main", { layout: "index", users: users()});
 });
 
 app.get("*", (req, res) => {
