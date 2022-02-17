@@ -7,10 +7,10 @@ html, * {
 :root {
 	--background-blue: #2C2A46;
 	--background-blue-detail: #42285C;
-	--card-blue: #545177;
+	--card-blue: rgba(84, 81, 119, 0.7);
 	--default-blue-1: #686492;
 	--default-blue-2: #3D3B57;
-	--shadow: #3D3B57;
+	--shadow: rgba(61, 59, 87, 0.3);
 
 	--detail-yellow: #FEDF6A;
 	--detail-green: #70CF98;
@@ -19,6 +19,14 @@ html, * {
 	--detail-lightblue: #B0A8FF;
 
 	--text: #fff;
+}
+
+h2 {
+	font-size: 18px;
+}
+
+h3, p {
+	font-size: 14px;
 }
 
 body {
@@ -38,6 +46,91 @@ body > main {
 	margin: 0 1em;
 }
 
+/* header */
+
+header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.navBtn {
+	position: relative;
+	z-index: 10;
+	width: 2em;
+	height: 1.5em;
+	background: none;
+	border: none;
+
+	margin: 16px;
+}
+
+.navBtn > span {
+	position: absolute;
+	display: block;
+	width: 2em;
+	height: 2px;
+
+	background-color: #2785FE;
+}
+
+.navBtn > span:first-of-type {
+	top: 0;
+}
+
+.navBtn > span:nth-of-type(2) {
+	top: 50%;
+	transform: translate( 0, -50%);
+}
+
+.navBtn > span:last-of-type {
+	bottom: 0;
+}
+
+nav {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 50%;
+	background: var(--text);
+	padding: 1rem;
+	transform: translateX(-100%);
+	transition: .5s;
+
+	z-index: 9;
+}
+
+nav.is-open {
+	transform: translateX(0);
+}
+
+nav > ul {
+	margin-top: 2em;
+	width: 100%;
+}
+
+nav > ul > li {
+	padding: .5em 0;
+}
+
+nav > ul > li:active {
+	background-color: #2C2A46;
+	color: var(--text);
+}
+
+
+.profilePic {
+	background-color: #2785FE;
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	display: block;
+
+	margin: 1em;
+}
+
+/* card layout */
+
 body > section {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
@@ -56,6 +149,9 @@ body > section {
 	border-radius: 12px;
 
 	color: var(--text);
+
+	border-top: 1px solid var(--detail-lightblue);
+	border-left: 1px solid var(--detail-lightblue);
 }
 
 .card > figure {
@@ -70,7 +166,7 @@ body > section {
 	position:absolute;
 }
 
-.card > figure > p {
+.lvl {
 	top: 6px;
 	right: 6px;
 	width: 24px;
@@ -82,7 +178,7 @@ body > section {
 	color: var(--detail-yellow);
 }
 
-.card > figure > p:after {
+.lvl:after {
 	content: "";
 	position: absolute;
 	width: 100%;
@@ -96,7 +192,7 @@ body > section {
 	opacity: .2;
 }
 
-.card > figure > div {
+.tags {
 	display: flex;
 	gap: 6px;
 	transform: translateY(calc(-100% - 16px));
@@ -104,6 +200,7 @@ body > section {
 }
 
 .playerClass, .playerElement {
+	font-size: 10px;
 	padding: 3px 6px;
 	border-radius: 6px;
 }
@@ -117,7 +214,10 @@ body > section {
 }
 
 .card > figure > figcaption {
-	padding: 6px;
+	padding: 0 6px 6px 6px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
 }
 
 .card > figure > figcaption > button {
@@ -126,7 +226,43 @@ body > section {
 	border: 1px solid var(--detail-red);
 	border-radius: 50%;
 	padding: 8px;
-	
+
 	display: flex;
 	align-items: center;
+	z-index: 1;
+	position: relative;
+
+	box-shadow: 2px 2px 4px var(--shadow);
+}
+
+.card > figure > figcaption > button:after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--detail-red);
+	z-index: -1;
+	opacity: .2;
+}
+
+.playerInfo > p {
+	padding-left: 1.2em;
+	position: relative;
+}
+
+.playerInfo > p:before {
+	content: "";
+	position: absolute;
+	background-image: url(../images/location.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+
+	height: 100%;
+	width: 1em;
+
+	left: 0;
 }
