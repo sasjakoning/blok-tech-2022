@@ -4,14 +4,40 @@ html, * {
 	box-sizing: border-box;
 }
 
-li {
-	font-size: 2rem;
-	width: 300px;
-	margin: 4px;
-	padding: 4px;
-	list-style: none
-	}
-	
-.midlaner {background-color: #eeeeee}
+body {
+	/* color: var(--text-color); */
 
-.toplaner {background-color: #ffea00}
+	width: 100%;
+
+	font-family: "poppins", sans-serif;
+
+	font-size: 16px;
+}
+
+body > main {
+	margin: 0 1em;
+}
+
+body > section {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1em;
+	width: 100%;
+	padding: 1em;
+
+	background-color: red;
+}
+
+.card {
+	background-color: lightblue;
+	display: flex;
+	flex-direction: column;
+}
+
+.card > figure {
+	position: relative;
+}
+
+.card picture > img {
+	width: 100%;
+} 

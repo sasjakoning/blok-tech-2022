@@ -18,33 +18,33 @@ app.engine(
 
 app.use(express.static("public"));
 
-fakeApi = () => {
-  return [
-    {
-      name: "Katarina",
-      lane: "midlaner",
-    },
-    {
-      name: "Jayce",
-      lane: "toplaner",
-    },
-    {
-      name: "Heimerdinger",
-      lane: "toplaner",
-    },
-    {
-      name: "Zed",
-      lane: "midlaner",
-    },
-    {
-      name: "Azir",
-      lane: "midlaner",
-    },
-  ];
-};
+// fakeApi = () => {
+//   return [
+//     {
+//       name: "Katarina",
+//       lane: "midlaner",
+//     },
+//     {
+//       name: "Jayce",
+//       lane: "toplaner",
+//     },
+//     {
+//       name: "Heimerdinger",
+//       lane: "toplaner",
+//     },
+//     {
+//       name: "Zed",
+//       lane: "midlaner",
+//     },
+//     {
+//       name: "Azir",
+//       lane: "midlaner",
+//     },
+//   ];
+// };
 
 app.get("/", (req, res) => {
-  res.render("main", { layout: "index", suggestedChamps: fakeApi (), listExists: true});
+  res.render("main", { layout: "index"});
 });
 
 app.get("*", (req, res) => {
