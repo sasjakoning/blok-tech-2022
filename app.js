@@ -52,8 +52,17 @@ users = () => {
 }
 
 app.get("/", (req, res) => {
-  res.render("main", { layout: "index", users: users()});
+  res.render("main", { 
+    layout: "index",
+    users: users()});
 });
+
+// app.get("/about", (req, res) => {
+//   res.render("main", { 
+//     layout: "index",
+//     style: "test.css",
+//     users: users()});
+// });
 
 app.get("*", (req, res) => {
   res.send(`${404} not found`);
