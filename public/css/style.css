@@ -11,13 +11,18 @@ html, * {
 	--default-blue-1: #686492;
 	--default-blue-2: #3D3B57;
 	--shadow: rgba(61, 59, 87, 0.3);
+	--dropshadow: 2px 2px 4px var(--shadow);
 	--shadow-hard: rgba(12, 11, 33, 1);
 
 	--detail-yellow: #FEDF6A;
 	--detail-yellow-background: rgba(255, 222, 106, 0.05);
-	--detail-green: #70CF98;
-	--detail-blue: #2785FE;
-	--detail-red: #FF6270;
+	--detail-green: rgb(112, 207, 152);
+	--detail-green-background: rgba(112, 207, 152, 0.05);
+	
+	--detail-blue: rgb(39, 133, 254);
+	--detail-blue-background: rgba(39, 133, 254, 0.05);
+	--detail-red: rgb(255, 98, 112);
+	--detail-red-background: rgba(255, 98, 112, 0.05);
 	--detail-lightblue: #B0A8FF;
 
 	--text-color: #fff;
@@ -47,8 +52,6 @@ body {
 
 body > main {
 	margin: 0 2em;
-
-	height: 100%;
 }
 
 /* header */
@@ -215,7 +218,7 @@ nav > ul > li:active {
 
 	color: var(--detail-yellow);
 
-	filter: drop-shadow(2px 2px 2px var(--shadow));
+	box-shadow: var(--dropshadow);
 }
 
 .distance {
@@ -227,8 +230,7 @@ nav > ul > li:active {
 
 	position: relative;
 
-	filter: drop-shadow(2px 2px 2px var(--shadow));
-
+	box-shadow: var(--dropshadow);
 }
 
 .distance::before {
@@ -273,6 +275,7 @@ nav > ul > li:active {
 
 .playerInfo > h3 {
 	font-size: 18px;
+	line-height: 1;
 }
 
 /* tags */
@@ -286,21 +289,83 @@ nav > ul > li:active {
 .tags > p{
 	padding: 0.3em 0.9em;
     border-radius: 0.6em;
-    filter: drop-shadow(2px 2px 2px var(--shadow));
+    box-shadow: var(--dropshadow);
 }
 
 .playerClass {
-	border: 1px solid var(--text-color);
-	background-color: var(--text-color-background);
+	border: 1px solid var(--detail-blue);
+	background-color: var(--detail-blue-background);
+
+	color: var(--detail-blue);
 }
 
 .playerElement {
-	border: 1px solid var(--text-color);
-	background-color: var(--text-color-background);
+	border: 1px solid var(--detail-red);
+	background-color: var(--detail-red-background);
+
+	color: var(--detail-red);
 }
 
 /* --- */
 
 .aboutMe {
-	margin-top: 5em;
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
+.aboutMe > h3{
+	font-size: 16px;
+}
+
+.aboutMe > p {
+	margin-top: .5em;
+}
+
+/* --- */
+
+
+
+
+/****************************/
+/* like and dislike buttons */
+/****************************/
+
+.buttonContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 6em;
+
+	margin-top: 2em;
+}
+
+.like, .dislike {
+	background: none;
+	border: none;
+
+	border-radius: 50%;
+
+	width: 6em;
+	height: 6em;
+	line-height: 0;
+}
+
+.like img {
+	width: 4em;
+	height: 4em;
+}
+
+.dislike img {
+	width: 3em;
+	height: 3em;
+}
+
+.like {
+	border: 1px solid var(--detail-red);
+	background: var(--detail-red-background);
+}
+
+.dislike {
+	border: 1px solid var(--detail-blue);
+	background: var(--detail-blue-background);
 }
