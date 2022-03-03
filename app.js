@@ -3,8 +3,12 @@ const app = express();
 const port = 3000;
 
 const handlebars = require("express-handlebars");
+const bodyParser = require('body-parser');
+const multer  = require('multer');
 
 app.set("view engine", "hbs");
+app.use(bodyParser.urlencoded({extended: true}));
+
 
 app.engine(
   "hbs",
@@ -57,12 +61,16 @@ app.get("/", (req, res) => {
     users: users()});
 });
 
-// app.get("/about", (req, res) => {
-//   res.render("main", { 
-//     layout: "index",
-//     style: "test.css",
-//     users: users()});
-// });
+// test voor de buttons like dislike
+app.get("/register", (req, res) => {
+  const email = req.body.email;
+
+  res.send("worked")
+
+  const data = {
+    email
+  };
+})
 
 app.get("*", (req, res) => {
   res.send(`${404} not found`);
