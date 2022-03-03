@@ -1,14 +1,14 @@
+
 const express = require("express");
 const app = express();
 const port = 3000;
 
 const handlebars = require("express-handlebars");
-const bodyParser = require('body-parser');
-const multer  = require('multer');
+const bodyParser = require("body-parser");
+const multer = require("multer");
 
 app.set("view engine", "hbs");
-app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine(
   "hbs",
@@ -25,52 +25,53 @@ app.use(express.static("public"));
 users = () => {
   return [
     {
-      name: 'Katarina',
-      realName: 'Katy Johnson'
+      name: "Katarina",
+      realName: "Katy Johnson",
     },
     {
-      name: 'Gollum',
-      realName: 'Rick Smith'
+      name: "Gollum",
+      realName: "Rick Smith",
     },
     {
-      name: 'Deathbringer',
-      realName: 'Eric Paul'
+      name: "Deathbringer",
+      realName: "Eric Paul",
     },
     {
-      name: 'Butterfy Lily',
-      realName: 'Sarah Burger'
+      name: "Butterfy Lily",
+      realName: "Sarah Burger",
     },
     {
-      name: 'Azir',
-      realName: 'Micheal Beach'
+      name: "Azir",
+      realName: "Micheal Beach",
     },
     {
-      name: 'Azir',
-      realName: 'Micheal Beach'
+      name: "Azir",
+      realName: "Micheal Beach",
     },
     {
-      name: 'Azir',
-      realName: 'Micheal Beach'
-    }
+      name: "Azir",
+      realName: "Micheal Beach",
+    },
   ];
-}
+};
 
 app.get("/", (req, res) => {
-  res.render("main", { 
+  res.render("main", {
     layout: "index",
-    users: users()});
+    users: users(),
+  });
 });
 
 // test voor de buttons like dislike
 app.get("/register", (req, res) => {
   const email = req.body.email;
 
-  res.send("worked")
+  res.send("worked");
 
   const data = {
-    email
+    email,
   };
-})
+});
 
 app.get("*", (req, res) => {
   res.send(`${404} not found`);
