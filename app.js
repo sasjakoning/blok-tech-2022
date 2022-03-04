@@ -7,6 +7,7 @@ const port = 3000;
 const handlebars = require("express-handlebars");
 const bodyParser = require("body-parser");
 // const multer = require("multer");
+const db = require("./config/connect.js")
 
 app.set("view engine", "hbs");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,7 +24,7 @@ app.engine(
 
 app.use(express.static("public"));
 
-
+db.connectDb();
 
 app.get("/", (req, res) => {
   res.render("main", {
