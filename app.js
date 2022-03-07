@@ -5,6 +5,7 @@ const port = 3000;
 
 
 const handlebars = require("express-handlebars");
+
 const bodyParser = require("body-parser");
 // const multer = require("multer");
 const db = require("./config/connect.js")
@@ -12,6 +13,7 @@ const UserModel = require("./models/user")
 
 app.set("view engine", "hbs");
 app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.engine(
   "hbs",
@@ -24,6 +26,7 @@ app.engine(
 );
 
 app.use(express.static("public"));
+
 
 db.connectDb();
 
@@ -48,6 +51,7 @@ app.post("/api/user", (req, res) => {
     console.log("saveuser")
   })
 })
+
 
 app.get("*", (req, res) => {
   res.send(`${404} not found`);
