@@ -30,10 +30,13 @@ app.use(express.static("public"));
 
 db.connectDb();
 
-app.get("/", (req, res) => {
-  res.render("main", {
-    layout: "index"
-  });
+app.get("/", async(req, res) => {
+  await UserModel.find({}).lean().exec((err, users) => {
+    res.render("main", {
+      layout: "index",
+      data: users
+    })
+  })
 });
 
 app.get("/create-user", (req, res) => {

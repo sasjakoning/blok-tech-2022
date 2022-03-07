@@ -1,3 +1,5 @@
+{{#each data}}
+
 <figure class="largeCard">
     <div class="pictureContainer">
 
@@ -28,8 +30,8 @@
 
     <figcaption>
         <div class="playerInfo">
-            <h2>Amber</h2>
-            <h3>Sasja Koning</h3>
+            <h2>{{this.charactername}}</h2>
+            <h3>{{this.firstname}} {{this.lastname}}</h3>
         </div>
 
         <div class="tags">
@@ -39,8 +41,9 @@
 
         <div class="aboutMe">
             <h3>About me:</h3>
-            <p>Hi I like slaying monsters and eating pizza with my friends.</p>
-            <p>I’m looking for a strong player that can help me defeat the boss on lvl 4</p>
+            <p>{{this.aboutme}}</p>
         </div>
     </figcaption>
 </figure>
+
+{{/each}}
