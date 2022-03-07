@@ -8,3 +8,17 @@ console.log(navBtn, nav)
 navBtn.addEventListener("click", e => {
     nav.classList.toggle("is-open")
 })
+
+// like dislike
+
+const likeBtn = document.querySelector(".like");
+const dislikeBtn = document.querySelector(".dislike");
+
+likeBtn.addEventListener("click", () => {
+    console.log("liked!")
+
+})
+
+dislikeBtn.addEventListener("click", () => {
+    console.log("disliked!")
+})

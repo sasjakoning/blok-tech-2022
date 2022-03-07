@@ -1,15 +1,18 @@
+
 const express = require("express");
 const app = express();
 const port = 3000;
 
+
 const handlebars = require("express-handlebars");
-const bodyParser = require('body-parser');
-const multer  = require('multer');
-const { response } = require("express");
+
+const bodyParser = require("body-parser");
+// const multer = require("multer");
+const db = require("./config/connect.js")
+const UserModel = require("./models/user")
 
 app.set("view engine", "hbs");
-
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.engine(
@@ -25,11 +28,29 @@ app.engine(
 app.use(express.static("public"));
 
 
+db.connectDb();
+
 app.get("/", (req, res) => {
-  res.render("main", { 
-    layout: "index"});
+  res.render("main", {
+    layout: "index"
+  });
 });
 
+app.get("/create-user", (req, res) => {
+  res.render("createUser", {
+    layout: "index"
+  })
+})
+
+app.post("/api/user", (req, res) => {
+  const saveUser = new UserModel(req.body)
+
+  saveUser.save((error, savedUser)=>{
+    if(error) throw error
+    res.json(savedUser)
+    console.log("saveuser")
+  })
+})
 
 
 app.get("*", (req, res) => {
