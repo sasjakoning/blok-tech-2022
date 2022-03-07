@@ -6,6 +6,21 @@ const port = 3000;
 
 const handlebars = require("express-handlebars");
 
+const hbs = handlebars.create({
+  helpers: {
+    // cardList: require("./helpers/cardsList")
+    cardsList() {return "BAR!"}
+  }
+})
+
+// handlebars.registerHelper("listItem", function (from, to, context, options){
+//   let item = ""
+//   for (var i = from, j = to; i < j; i++) {
+//     item = item + options.fn(context[i]);
+//   }
+//   return item;
+// })
+
 const bodyParser = require("body-parser");
 // const multer = require("multer");
 const db = require("./config/connect.js")
@@ -30,14 +45,53 @@ app.use(express.static("public"));
 
 db.connectDb();
 
+// index page
+
 app.get("/", async(req, res) => {
   await UserModel.find({}).lean().exec((err, users) => {
+    const userList = users.slice(0, 3)
+
     res.render("main", {
       layout: "index",
-      data: users
+      helpers: {
+        cardsList(){
+          const items = users.slice(0, 3);
+          console.log(items)
+        },
+        log(){
+          console.log("logged")
+          console.log(userList)
+        }
+      },
+      data: userList
     })
   })
 });
+
+// console.log(UserModel.find({}).lean().exec((err, users) => {
+//   console.log(users.slice(0, 3));
+//   users.slice(0, 3)
+// }))
+
+// if like has been pressed
+
+app.get("/result-like", async(req, res) => {
+  console.log("like")
+})
+
+// if dislike has been pressed
+
+app.get("/result-dislike", async(req, res) => {
+  console.log("dislike")
+})
+
+// count how many users
+
+UserModel.find().lean().exec((err, results) => {
+  console.log(results.length)
+})
+
+// create new users to add to database
 
 app.get("/create-user", (req, res) => {
   res.render("createUser", {

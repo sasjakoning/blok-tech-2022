@@ -1,14 +1,20 @@
-
 {{!-- <form method="POST" action="/" class="buttonContainer"> --}}
-<form method="POST" action="/" class="buttonContainer">
+    <section class="buttonContainer">
 
-    <button class="dislike">
-        <img src="images/dislike.svg" alt="" />
-    </button>
+        <form method="GET" action="/result-dislike">
 
-    <button type="submit" value="submit" name="like" class="like">
+            <button class="dislike">
+                <img src="images/dislike.svg" alt="" />
+            </button>
 
-        <img src="images/like.svg" alt="" />
-    </button>
+        </form>
 
-</form>
+        <form method="GET" action="/result-like">
+        
+            <button class="like">
+                <img src="images/like.svg" alt="">
+            </button>
+
+        </form>
+        
+    </section>
