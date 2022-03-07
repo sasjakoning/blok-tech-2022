@@ -15,10 +15,13 @@ const likeBtn = document.querySelector(".like");
 const dislikeBtn = document.querySelector(".dislike");
 
 likeBtn.addEventListener("click", () => {
+    const topCard = document.querySelector(".largeCard:last-of-type")
+    // topCard.remove()
     console.log("liked!")
-
 })
 
 dislikeBtn.addEventListener("click", () => {
+    const topCard = document.querySelector(".largeCard:last-of-type")
+    // topCard.remove()
     console.log("disliked!")
 })
