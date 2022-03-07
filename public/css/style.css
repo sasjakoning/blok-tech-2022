@@ -7,7 +7,7 @@ html, * {
 :root {
 	--background-blue: #2C2A46;
 	--background-blue-detail: #42285C;
-	--card-blue: rgba(84, 81, 119, 0.7);
+	--card-blue: rgba(84, 81, 119, 1);
 	--default-blue-1: #686492;
 	--default-blue-2: #3D3B57;
 	--shadow: rgba(61, 59, 87, 0.3);
@@ -143,7 +143,7 @@ nav > ul > li:active {
     background: var(--card-blue);
     height: 80%;
 
-	width: 100%;
+	width: calc(100% - 4em);
 
     border-radius: 12px;
 
@@ -151,7 +151,7 @@ nav > ul > li:active {
 	flex-direction: column;
 	align-items: center;
 
-	position: relative;
+	position: absolute;
 }
 
 .pictureContainer {
@@ -337,6 +337,10 @@ nav > ul > li:active {
 	gap: 6em;
 
 	margin-top: 2em;
+
+	position: fixed;
+	bottom: 1em;
+	z-index: 100;
 }
 
 .like, .dislike {
