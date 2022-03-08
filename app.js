@@ -4,29 +4,11 @@ const port = 3000;
 
 const handlebars = require("express-handlebars");
 
-const hbs = handlebars.create({
-  helpers: {
-    // cardList: require("./helpers/cardsList")
-    cardsList() {
-      return "BAR!";
-    },
-  },
-});
-
-// handlebars.registerHelper("listItem", function (from, to, context, options){
-//   let item = ""
-//   for (var i = from, j = to; i < j; i++) {
-//     item = item + options.fn(context[i]);
-//   }
-//   return item;
-// })
-
 const bodyParser = require("body-parser");
 // const multer = require("multer");
 const db = require("./config/connect.js");
 const UserModel = require("./models/user");
 
-app.set("view engine", "hbs");
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.engine(
@@ -36,8 +18,11 @@ app.engine(
     extname: "hbs",
     defaultLayout: "planB",
     partialsDir: __dirname + "/views/partials/",
-  })
+    helpers: require("./helpers/handlebars-helpers")
+  }),
 );
+
+app.set("view engine", "hbs");
 
 app.use(express.static("public"));
 
@@ -46,9 +31,8 @@ db.connectDb();
 // index page
 
 app.get("/", async (req, res) => {
-  await UserModel.find({})
-    .lean()
-    .exec((err, users) => {
+  try {
+    await UserModel.find({}).lean().exec((err, users) => {
       // const userList = users.slice(0, 3);
       console.log(users.length);
       users.length = 3;
@@ -60,6 +44,9 @@ app.get("/", async (req, res) => {
         data: users,
       });
     });
+  } catch(err){
+    console.log(err)
+  }
 });
 
 // if like has been pressed
