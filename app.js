@@ -46,16 +46,18 @@ db.connectDb();
 //     console.log(results)
 //   });
 
+let counter = 0;
 
 app.get("/", async (req, res) => {
 
   try{
     // let users = await UserModel.find({}).lean()
-    let users = await UserModel.findOne({}).lean()
+    let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
 
+    console.log(users)
+
+    counter = 0;
     // users.length = 3;
-
-    console.log(users._id)
 
     res.render("main", {
       layout: "index",
@@ -71,21 +73,25 @@ app.get("/", async (req, res) => {
 // if like has been pressed
 
 // var aaa = db.getCollection("users").find({})
-
 app.get("/result-like", async (req, res) => {
   console.log("like");
 
 
   try{
-    let users = await UserModel.findOne({}).lean()
+    let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
+    
+    console.log(users.length)
+
+    counter++
+    // let users = await UserModel.findOne({}).lean()
 
     // users.push(users.shift())
 
     // users.length = 3;
 
-    console.log(users._id)
+    // console.log(users._id)
 
-    await UserModel.deleteOne({_id: users._id})
+    // await UserModel.deleteOne({_id: users._id})
 
 
     res.render("main", {
