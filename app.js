@@ -54,17 +54,34 @@ app.get("/", async (req, res) => {
 app.get("/result-like", async (req, res) => {
   console.log("like");
 
-  await UserModel.find({})
-  .lean()
-  .exec((err, users) => {
-    console.log(users.length);
-    users.length = 3;
+  let users = await UserModel.find({}).lean()
 
-    users.push(users.shift())
+  users.length = 3;
 
-    console.log(users)
+  users.push(users.shift())
 
+
+  console.log(users)
+
+  res.render("main", {
+    layout: "index",
+    data: users,
   });
+
+  // await UserModel.find({}).lean().exec((err, users) => {
+  //   console.log(users.length);
+  //   users.length = 3;
+
+  //   users.push(users.shift())
+
+  //   console.log(users)
+
+  //   res.render("main", {
+  //     layout: "index",
+  //     data: users,
+  //   });
+
+  // });
 
 });
 
@@ -72,6 +89,21 @@ app.get("/result-like", async (req, res) => {
 
 app.get("/result-dislike", async (req, res) => {
   console.log("dislike");
+
+  await UserModel.find({}).lean().exec((err, users) => {
+    console.log(users.length);
+    // users.length = 3;
+
+    users.push(users.shift())
+
+    console.log(users)
+
+    res.render("main", {
+      layout: "index",
+      data: users,
+    });
+
+  });
 });
 
 // count how many users
