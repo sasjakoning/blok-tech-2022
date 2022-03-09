@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 // const multer = require("multer");
 const db = require("./config/connect.js");
 const UserModel = require("./models/user");
+const mongoose = require("mongoose");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -30,73 +31,84 @@ db.connectDb();
 
 // index page
 
+// let users = UserModel.find({}, (err, data) => {
+//   if(err){
+//     console.log(err)
+//   }else {
+//     console.log(data)
+//   }
+// })
+
+// let users = UserModel.find()
+//   .lean()
+//   .exec((err, results) => {
+//     console.log(`amount of users is ${results.length}`);
+//     console.log(results)
+//   });
+
+
 app.get("/", async (req, res) => {
-  try {
-    await UserModel.find({}).lean().exec((err, users) => {
-      // const userList = users.slice(0, 3);
-      console.log(users.length);
-      users.length = 3;
 
-      console.log(users)
+  try{
+    // let users = await UserModel.find({}).lean()
+    let users = await UserModel.findOne({}).lean()
 
-      res.render("main", {
-        layout: "index",
-        data: users,
-      });
-    });
+    // users.length = 3;
+
+    console.log(users._id)
+
+    res.render("main", {
+      layout: "index",
+      data: users
+    })
+
   } catch(err){
     console.log(err)
   }
+
 });
 
 // if like has been pressed
 
+// var aaa = db.getCollection("users").find({})
+
 app.get("/result-like", async (req, res) => {
   console.log("like");
 
-  let users = await UserModel.find({}).lean()
 
-  users.length = 3;
+  try{
+    let users = await UserModel.findOne({}).lean()
 
-  users.push(users.shift())
+    // users.push(users.shift())
+
+    // users.length = 3;
+
+    console.log(users._id)
+
+    await UserModel.deleteOne({_id: users._id})
 
 
-  console.log(users)
+    res.render("main", {
+      layout: "index",
+      data: users
+    })
 
-  res.render("main", {
-    layout: "index",
-    data: users,
-  });
-
-  // await UserModel.find({}).lean().exec((err, users) => {
-  //   console.log(users.length);
-  //   users.length = 3;
-
-  //   users.push(users.shift())
-
-  //   console.log(users)
-
-  //   res.render("main", {
-  //     layout: "index",
-  //     data: users,
-  //   });
-
-  // });
+  } catch(err){
+    console.log(err)
+  }
 
 });
 
 // if dislike has been pressed
 
-app.get("/result-dislike", async (req, res) => {
+app.post("/result-dislike", async (req, res) => {
   console.log("dislike");
 
   await UserModel.find({}).lean().exec((err, users) => {
-    console.log(users.length);
     // users.length = 3;
 
     users.push(users.shift())
 
-    console.log(users)
 
     res.render("main", {
       layout: "index",
@@ -106,13 +118,6 @@ app.get("/result-dislike", async (req, res) => {
   });
 });
 
-// count how many users
-
-UserModel.find()
-  .lean()
-  .exec((err, results) => {
-    console.log(`amount of users is ${results.length}`);
-  });
 
 // create new users to add to database
 
@@ -129,6 +134,7 @@ app.post("/api/user", (req, res) => {
     if (error) throw error;
     res.json(savedUser);
     console.log("saveuser");
+    console.log(savedUser);
   });
 });
 

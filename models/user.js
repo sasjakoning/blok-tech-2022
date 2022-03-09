@@ -18,6 +18,10 @@ const UserSchema = new Schema({
     aboutme: {
         type: String,
         required: [false]
+    },
+    lookingfor: {
+        type: Array,
+        required: [false]
     }
 })
 

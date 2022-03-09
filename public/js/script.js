@@ -14,14 +14,26 @@ navBtn.addEventListener("click", e => {
 const likeBtn = document.querySelector(".like");
 const dislikeBtn = document.querySelector(".dislike");
 
-likeBtn.addEventListener("click", () => {
-    const topCard = document.querySelector(".largeCard:last-of-type")
-    // topCard.remove()
-    console.log("liked!")
-})
+// const formLike = document.querySelector(".form-like")
+// const formDislike = document.querySelector(".form-dislike")
 
-dislikeBtn.addEventListener("click", () => {
-    const topCard = document.querySelector(".largeCard:last-of-type")
-    // topCard.remove()
-    console.log("disliked!")
-})
+// formLike.addEventListener("submit", e => {
+//     e.preventDefault()
+
+//     console.log("submit")
+
+//     let form = e.target
+
+//     form.submit()
+// })
+
+// likeBtn.addEventListener("click", (event) => {
+//     event.preventDefault()
+//     const topCard = document.querySelector(".largeCard:last-of-type")
+//     console.log("liked!")
+// })
+
+// dislikeBtn.addEventListener("click", () => {
+//     const topCard = document.querySelector(".largeCard:last-of-type")
+//     console.log("disliked!")
+// })
