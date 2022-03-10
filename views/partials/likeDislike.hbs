@@ -1,0 +1,23 @@
+
+{{#each data}}
+<section class="buttonContainer">
+
+    <form class="form-dislike" method="GET" action="/dislike/{{this._id}}">
+
+        <button class="dislike">
+            <img src="../images/dislike.svg" alt="" />
+        </button>
+
+    </form>
+
+    <form class="form-like" method="GET" action="/like/{{this._id}}">
+
+        <button class="like">
+            <img src="../images/like.svg" alt="">
+        </button>
+
+    </form>
+
+</section>
+
+{{/each}}
