@@ -13,15 +13,15 @@ navBtn.addEventListener("click", e => {
 
 const forms = document.querySelectorAll("form")
 
-// forms.forEach((form) => {
-//     form.addEventListener("submit", (e) => {
-//         e.preventDefault();
+forms.forEach((form) => {
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-//         fetch(e.target.action, {
-//             method: "POST",
-//             headers: {"Content-Type": "application/json"},
-//         }).then((res) => {
-//             console.log("Request complete! response:", res);
-//         })
-//     })
-// })
+        fetch(e.target.action, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+        }).then((res) => {
+            console.log("Request complete! response:", res);
+        })
+    })
+})

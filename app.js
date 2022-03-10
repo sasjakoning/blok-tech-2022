@@ -40,7 +40,9 @@ app.get("/", async (req, res) => {
   // for ease, counter is always on 0 when on start page
 
   try{
-    let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
+    let users = await UserModel.find({}).lean();
+
+    users.length = 2;
 
     console.log(`current amount of users is ${users.length}`)
 
@@ -60,7 +62,7 @@ app.get("/", async (req, res) => {
 
 // if like has been pressed
 
-app.get("/like/:id", async (req, res) => {
+app.post("/like/:id", async (req, res) => {
   console.log("like");
 
   try{
@@ -99,7 +101,7 @@ app.get("/like/:id", async (req, res) => {
 
 // if dislike has been pressed
 
-app.get("/dislike/:id", async (req, res) => {
+app.post("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
   try{
