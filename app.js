@@ -60,7 +60,7 @@ app.get("/", async (req, res) => {
 
 // if like has been pressed
 
-app.get("/like/:id", async (req, res) => {
+app.post("/like/:id", async (req, res) => {
   console.log("like");
 
   try{
@@ -99,7 +99,7 @@ app.get("/like/:id", async (req, res) => {
 
 // if dislike has been pressed
 
-app.get("/dislike/:id", async (req, res) => {
+app.post("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
   try{

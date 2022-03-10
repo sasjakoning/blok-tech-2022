@@ -52,6 +52,7 @@ body {
 
 body > main {
 	margin: 0 2em;
+	overflow: hidden;
 }
 
 /* header */
@@ -152,6 +153,18 @@ nav > ul > li:active {
 	align-items: center;
 
 	position: absolute;
+
+	transform-origin: bottom center;
+}
+
+.cardLike {
+	animation: cardLike .5s ease-in-out forwards;
+}
+
+@keyframes cardLike {
+	to {
+		transform: rotate(30deg) translateX(30em) translateY(-20em);
+	}
 }
 
 .pictureContainer {
