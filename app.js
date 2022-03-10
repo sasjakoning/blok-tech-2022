@@ -60,7 +60,7 @@ app.get("/", async (req, res) => {
 
 // if like has been pressed
 
-app.get("/result-like", async (req, res) => {
+app.get("/like/:id", async (req, res) => {
   console.log("like");
 
   try{
@@ -99,21 +99,40 @@ app.get("/result-like", async (req, res) => {
 
 // if dislike has been pressed
 
-app.post("/result-dislike", async (req, res) => {
+app.get("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
-  await UserModel.find({}).lean().exec((err, users) => {
-    // users.length = 3;
+  try{
 
-    users.push(users.shift())
+    counter++;
 
+    // find the users from database, serve only one, skip users based on counter amount
+    let users = await UserModel.find({}, null, {skip: counter, limit: 1}).lean();
+
+    console.log(`current amount of users is ${users.length}`)
+
+    console.log(`counter is on ${counter}`)
+
+    console.log(`current user id is ${users._id}`)
+
+    // find actual amount of users in array
+    const userCount = await UserModel.find({}).lean();
+
+    console.log(`total amount of users is ${userCount.length}`)
+
+    // if the counter goes beyond the amount of users in array, reset back
+    if (counter == userCount.length - 1) {
+      counter = -1;
+    }
 
     res.render("main", {
       layout: "index",
-      data: users,
-    });
+      data: users
+    })
 
-  });
+  } catch(err){
+    console.log(err)
+  }
 });
 
 

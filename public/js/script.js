@@ -11,29 +11,17 @@ navBtn.addEventListener("click", e => {
 
 // like dislike
 
-const likeBtn = document.querySelector(".like");
-const dislikeBtn = document.querySelector(".dislike");
+const forms = document.querySelectorAll("form")
 
-// const formLike = document.querySelector(".form-like")
-// const formDislike = document.querySelector(".form-dislike")
+// forms.forEach((form) => {
+//     form.addEventListener("submit", (e) => {
+//         e.preventDefault();
 
-// formLike.addEventListener("submit", e => {
-//     e.preventDefault()
-
-//     console.log("submit")
-
-//     let form = e.target
-
-//     form.submit()
-// })
-
-// likeBtn.addEventListener("click", (event) => {
-//     event.preventDefault()
-//     const topCard = document.querySelector(".largeCard:last-of-type")
-//     console.log("liked!")
-// })
-
-// dislikeBtn.addEventListener("click", () => {
-//     const topCard = document.querySelector(".largeCard:last-of-type")
-//     console.log("disliked!")
+//         fetch(e.target.action, {
+//             method: "POST",
+//             headers: {"Content-Type": "application/json"},
+//         }).then((res) => {
+//             console.log("Request complete! response:", res);
+//         })
+//     })
 // })
