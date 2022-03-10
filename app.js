@@ -63,8 +63,6 @@ app.get("/", async (req, res) => {
       console.log(`counter2 is ${counter2}`)
 
       result = result.slice(counter1, counter2)
-
-      console.log(result)
       
       res.render("main", {
         layout: "index",
@@ -97,11 +95,7 @@ app.post("/like/:id", async (req, res) => {
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
-      console.log(result)
-
       result = result.slice(counter1, counter2)
-
-      console.log(result)
 
       res.render("main", {
         layout: "index",
@@ -114,7 +108,7 @@ app.post("/like/:id", async (req, res) => {
     console.log(userCount.length)
 
     // if the counter goes beyond the amount of users in array, reset back
-    if (counter2 == userCount.length - 1) {
+    if (counter2 == userCount.length + 2) {
       counter1 = 0;
       counter2 = 2;
     }
@@ -143,11 +137,7 @@ app.post("/dislike/:id", async (req, res) => {
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
-      console.log(result)
-
       result = result.slice(counter1, counter2)
-
-      console.log(result)
 
       res.render("main", {
         layout: "index",
