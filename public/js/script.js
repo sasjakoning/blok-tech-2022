@@ -14,28 +14,34 @@ navBtn.addEventListener("click", e => {
 const likeBtn = document.querySelector(".like")
 const dislikeBtn = document.querySelector(".dislike")
 
-const card = document.querySelector(".largeCard:nth-of-type(2)")
+const card = document.querySelector(".largeCard:first-of-type")
 
 console.log(card)
 
 const likeForm = document.querySelector(".form-like")
 
-console.log(likeForm);
-
 likeForm.addEventListener("submit", (e) => {
     console.log("submitted")
-    // e.preventDefault()
+
+    e.preventDefault()
 
     card.classList.add("cardLike")
     setTimeout(() => {
-        fetch(e.target.action, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"}
-        }).then((res) => {
-            // likeForm.submit()
-            console.log("request complete!")
-        })
-    }, 1000);
+        likeForm.submit()
+    }, 500);
+})
+
+const dislikeForm = document.querySelector(".form-dislike")
+
+dislikeForm.addEventListener("submit", (e) => {
+    console.log("submitted")
+
+    e.preventDefault()
+
+    card.classList.add("cardDislike")
+    setTimeout(() => {
+        likeForm.submit()
+    }, 500);
 })
 
 // likeBtn.addEventListener("click", (e) => {

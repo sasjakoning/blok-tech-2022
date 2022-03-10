@@ -46,23 +46,25 @@ const shiftElements = (array, from, to) => {
 // index page
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
-let counter = 0;
-let counter2 = 1;
+let counter1 = 0;
+let counter2 = 2;
 
 app.get("/", async (req, res) => {
 
-  counter = 0;
-  counter2 = 1;
+  counter1 = 0;
+  counter2 = 2;
   // for ease, counter is always on 0 when on start page
 
   try{
 
     getUsers().then((result) => {
 
-      console.log(`counter is ${counter}`)
+      console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
-      result.length = 2;
+      result = result.slice(counter1, counter2)
+
+      console.log(result)
       
       res.render("main", {
         layout: "index",
@@ -85,19 +87,19 @@ app.post("/like/:id", async (req, res) => {
 
   try{
 
-    counter++;
+    counter1++;
     counter2++;
     
     const userCount = await UserModel.find({}).lean();
 
     getUsers().then((result) => {
 
-      console.log(`counter is ${counter}`)
+      console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
       console.log(result)
 
-      result = result.slice(counter, counter2)
+      result = result.slice(counter1, counter2)
 
       console.log(result)
 
@@ -113,8 +115,8 @@ app.post("/like/:id", async (req, res) => {
 
     // if the counter goes beyond the amount of users in array, reset back
     if (counter2 == userCount.length - 1) {
-      counter = 0;
-      counter2 = 1;
+      counter1 = 0;
+      counter2 = 2;
     }
     
 
@@ -131,31 +133,38 @@ app.post("/dislike/:id", async (req, res) => {
 
   try{
 
-    counter++;
-
-    // find the users from database, serve only one, skip users based on counter amount
-    let users = await UserModel.find({}, null, {skip: counter, limit: 1}).lean();
-
-    console.log(`current amount of users is ${users.length}`)
-
-    console.log(`counter is on ${counter}`)
-
-    console.log(`current user id is ${users._id}`)
-
-    // find actual amount of users in array
+    counter1++;
+    counter2++;
+    
     const userCount = await UserModel.find({}).lean();
 
-    console.log(`total amount of users is ${userCount.length}`)
+    getUsers().then((result) => {
+
+      console.log(`counter1 is ${counter1}`)
+      console.log(`counter2 is ${counter2}`)
+
+      console.log(result)
+
+      result = result.slice(counter1, counter2)
+
+      console.log(result)
+
+      res.render("main", {
+        layout: "index",
+        data: result
+      })
+    })
+
+    // find actual amount of users in array
+
+    console.log(userCount.length)
 
     // if the counter goes beyond the amount of users in array, reset back
-    if (counter == userCount.length - 1) {
-      counter = -1;
+    if (counter2 == userCount.length - 1) {
+      counter1 = 0;
+      counter2 = 2;
     }
-
-    res.render("main", {
-      layout: "index",
-      data: users
-    })
+    
 
   } catch(err){
     console.log(err)

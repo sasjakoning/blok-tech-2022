@@ -104,7 +104,7 @@ nav {
 	background: var(--text);
 	padding: 1rem;
 	transform: translateX(-100%);
-	transition: .5s;
+	/* transition: .5s; */
 
 	z-index: 9;
 }
@@ -157,6 +157,9 @@ nav > ul > li:active {
 	transform-origin: bottom center;
 }
 
+.largeCard:first-of-type {
+	z-index: 10;
+}
 
 .cardLike {
 	animation: cardLike .5s ease-in-out forwards;
@@ -165,6 +168,16 @@ nav > ul > li:active {
 @keyframes cardLike {
 	to {
 		transform: rotate(30deg) translateX(30em) translateY(-20em);
+	}
+}
+
+.cardDislike {
+	animation: cardDislike .5s ease-in-out forwards;
+}
+
+@keyframes cardDislike {
+	to {
+		transform: rotate(-30deg) translateX(-30em) translateY(-20em);
 	}
 }
 
@@ -281,6 +294,7 @@ nav > ul > li:active {
 
 .largeCard figcaption {
 	margin: -2em 1em 0 1em;
+	width: calc(100% - 4em);
 }
 
 .playerInfo > h2 {
@@ -354,13 +368,16 @@ nav > ul > li:active {
 
 	position: fixed;
 	bottom: 1em;
-	z-index: 100;
+	z-index: 10;
 }
 
 .buttonContainer:first-of-type {
-	z-index: 101;
-	/* idk why but script wont work when this isnt on??? */
+	z-index: 11;
 }
+
+/* .buttonContainer:last-of-type {
+	display: none;
+} */
 
 .like, .dislike {
 	background: none;
