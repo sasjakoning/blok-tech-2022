@@ -31,33 +31,21 @@ db.connectDb();
 
 // index page
 
-// let users = UserModel.find({}, (err, data) => {
-//   if(err){
-//     console.log(err)
-//   }else {
-//     console.log(data)
-//   }
-// })
-
-// let users = UserModel.find()
-//   .lean()
-//   .exec((err, results) => {
-//     console.log(`amount of users is ${results.length}`);
-//     console.log(results)
-//   });
-
+// to count the amount of times the page has been visited by the user. this to serve the correct object from array
 let counter = 0;
 
 app.get("/", async (req, res) => {
 
+  counter = 0;
+  // for ease, counter is always on 0 when on start page
+
   try{
-    // let users = await UserModel.find({}).lean()
     let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
 
-    console.log(users)
+    console.log(`current amount of users is ${users.length}`)
 
-    counter = 0;
-    // users.length = 3;
+    console.log(`counter is on ${counter}`)
+
 
     res.render("main", {
       layout: "index",
@@ -72,27 +60,31 @@ app.get("/", async (req, res) => {
 
 // if like has been pressed
 
-// var aaa = db.getCollection("users").find({})
 app.get("/result-like", async (req, res) => {
   console.log("like");
 
-
   try{
-    let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
-    
-    console.log(users.length)
 
-    counter++
-    // let users = await UserModel.findOne({}).lean()
+    counter++;
 
-    // users.push(users.shift())
+    // find the users from database, serve only one, skip users based on counter amount
+    let users = await UserModel.find({}, null, {skip: counter, limit: 1}).lean();
 
-    // users.length = 3;
+    console.log(`current amount of users is ${users.length}`)
 
-    // console.log(users._id)
+    console.log(`counter is on ${counter}`)
 
-    // await UserModel.deleteOne({_id: users._id})
+    console.log(`current user id is ${users._id}`)
 
+    // find actual amount of users in array
+    const userCount = await UserModel.find({}).lean();
+
+    console.log(`total amount of users is ${userCount.length}`)
+
+    // if the counter goes beyond the amount of users in array, reset back
+    if (counter == userCount.length - 1) {
+      counter = -1;
+    }
 
     res.render("main", {
       layout: "index",
