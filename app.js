@@ -29,28 +29,48 @@ app.use(express.static("public"));
 
 db.connectDb();
 
+
+const getUsers = async () => {
+  const usersList = UserModel.find({}).lean();
+
+  return usersList;
+}
+
+const shiftElements = (array, from, to) => {
+  let cutOut = array.splice(from, 1) [0];
+  array.splice(to, 0, cutOut)
+}
+
+
+
 // index page
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
 let counter = 0;
+let counter2 = 1;
 
 app.get("/", async (req, res) => {
 
   counter = 0;
+  counter2 = 1;
   // for ease, counter is always on 0 when on start page
 
   try{
-    let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
 
-    console.log(`current amount of users is ${users.length}`)
+    getUsers().then((result) => {
 
-    console.log(`counter is on ${counter}`)
+      console.log(`counter is ${counter}`)
+      console.log(`counter2 is ${counter2}`)
 
-
-    res.render("main", {
-      layout: "index",
-      data: users
+      result.length = 2;
+      
+      res.render("main", {
+        layout: "index",
+        data: result
+      })
     })
+
+   
 
   } catch(err){
     console.log(err)
@@ -66,30 +86,37 @@ app.post("/like/:id", async (req, res) => {
   try{
 
     counter++;
-
-    // find the users from database, serve only one, skip users based on counter amount
-    let users = await UserModel.find({}, null, {skip: counter, limit: 1}).lean();
-
-    console.log(`current amount of users is ${users.length}`)
-
-    console.log(`counter is on ${counter}`)
-
-    console.log(`current user id is ${users._id}`)
-
-    // find actual amount of users in array
+    counter2++;
+    
     const userCount = await UserModel.find({}).lean();
 
-    console.log(`total amount of users is ${userCount.length}`)
+    getUsers().then((result) => {
+
+      console.log(`counter is ${counter}`)
+      console.log(`counter2 is ${counter2}`)
+
+      console.log(result)
+
+      result = result.slice(counter, counter2)
+
+      console.log(result)
+
+      res.render("main", {
+        layout: "index",
+        data: result
+      })
+    })
+
+    // find actual amount of users in array
+
+    console.log(userCount.length)
 
     // if the counter goes beyond the amount of users in array, reset back
-    if (counter == userCount.length - 1) {
-      counter = -1;
+    if (counter2 == userCount.length - 1) {
+      counter = 0;
+      counter2 = 1;
     }
-
-    res.render("main", {
-      layout: "index",
-      data: users
-    })
+    
 
   } catch(err){
     console.log(err)

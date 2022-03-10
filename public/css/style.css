@@ -157,6 +157,7 @@ nav > ul > li:active {
 	transform-origin: bottom center;
 }
 
+
 .cardLike {
 	animation: cardLike .5s ease-in-out forwards;
 }
@@ -354,6 +355,11 @@ nav > ul > li:active {
 	position: fixed;
 	bottom: 1em;
 	z-index: 100;
+}
+
+.buttonContainer:first-of-type {
+	z-index: 101;
+	/* idk why but script wont work when this isnt on??? */
 }
 
 .like, .dislike {
