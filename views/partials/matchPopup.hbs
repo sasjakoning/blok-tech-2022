@@ -1,0 +1,22 @@
+{{#with likedUser}}
+<div class="matchBackground">
+    <div class="matchPopup">
+        <h1>Matched!</h1>
+        <p>with {{this.charactername}}</p>
+        <div class="matchButtonContainer">
+            <form class="form-chat" method="POST" action="/chat">
+
+                <button class="chat">
+                    <p>Start Chatting</p>
+                </button>
+
+            </form>
+
+            <button class="continue">
+                <p>Continue Swiping</p>
+            </button>
+
+        </div>
+    </div>
+</div>
+{{/with}}

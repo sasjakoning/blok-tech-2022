@@ -8,7 +8,9 @@ const bodyParser = require("body-parser");
 // const multer = require("multer");
 const db = require("./config/connect.js");
 const UserModel = require("./models/user");
+const AdminUserModel = require("./models/adminUser");
 const mongoose = require("mongoose");
+const toId = mongoose.Types.ObjectId
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -30,18 +32,14 @@ app.use(express.static("public"));
 db.connectDb();
 
 
+// get all users from database
 const getUsers = async () => {
   const usersList = UserModel.find({}).lean();
 
   return usersList;
 }
 
-const shiftElements = (array, from, to) => {
-  let cutOut = array.splice(from, 1) [0];
-  array.splice(to, 0, cutOut)
-}
-
-
+let isMatched = false;
 
 // index page
 
@@ -57,20 +55,21 @@ app.get("/", async (req, res) => {
 
   try{
 
+    // get users
     getUsers().then((result) => {
 
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
+      // only return two users from the array
       result = result.slice(counter1, counter2)
       
+      // send result to handlebars
       res.render("main", {
         layout: "index",
         data: result
       })
     })
-
-   
 
   } catch(err){
     console.log(err)
@@ -85,33 +84,62 @@ app.post("/like/:id", async (req, res) => {
 
   try{
 
-    counter1++;
-    counter2++;
-    
+    req.params.id = toId(req.params.id)
+
+    const likedUser = await UserModel.findById(req.params.id).lean()
+
+    const admin = await AdminUserModel.findOne({username: "adminuser"})
+
+    // put users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
+    // find users
     getUsers().then((result) => {
+  
+      counter1++;
+      counter2++;
+    
 
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
+      // only send 2 users
       result = result.slice(counter1, counter2)
 
-      res.render("main", {
-        layout: "index",
-        data: result
-      })
+      console.log(userCount.length)
+
+      // if the counter goes beyond the amount of users in array, reset back
+      if (counter2 == userCount.length) {
+        counter1 = 0;
+        counter2 = 2;
+      }
+
+      console.log(likedUser)
+
+      if(likedUser.likes[0]){
+        if(likedUser.likes[0].equals(admin._id)){
+          console.log("Match!")
+  
+          isMatched = true;
+  
+          res.render("main", {
+            layout: "index",
+            data: result,
+            likedUser: likedUser,
+            isMatched: isMatched
+          })
+        }
+
+      }else{
+        console.log("nope")
+
+        res.render("main", {
+          layout: "index",
+          data: result
+        })
+      }
+
     })
-
-    // find actual amount of users in array
-
-    console.log(userCount.length)
-
-    // if the counter goes beyond the amount of users in array, reset back
-    if (counter2 == userCount.length + 2) {
-      counter1 = 0;
-      counter2 = 2;
-    }
     
 
   } catch(err){
@@ -145,8 +173,6 @@ app.post("/dislike/:id", async (req, res) => {
       })
     })
 
-    // find actual amount of users in array
-
     console.log(userCount.length)
 
     // if the counter goes beyond the amount of users in array, reset back
@@ -160,6 +186,23 @@ app.post("/dislike/:id", async (req, res) => {
     console.log(err)
   }
 });
+
+// view matches
+
+app.get("/matches", async (req, res) => {
+
+  const admin = await AdminUserModel.findOne({}).populate("likes").lean()
+
+  const adminLikes = admin.likes[0]
+
+  console.log(adminLikes)
+
+
+  res.render("matches", {
+    layout: "index",
+    data: adminLikes
+  })
+})
 
 
 // create new users to add to database

@@ -65,3 +65,11 @@ const forms = document.querySelectorAll("form")
 //     })
 // })
 
+const continueBtn = document.querySelector(".continue")
+const matchBackground = document.querySelector(".matchBackground")
+const matchPopup = document.querySelector(".matchPopup")
+
+continueBtn.addEventListener("click", e => {
+    matchBackground.remove();
+    matchPopup.remove();
+})
