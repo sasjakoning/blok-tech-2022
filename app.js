@@ -39,21 +39,24 @@ const getUsers = async () => {
   return usersList;
 }
 
-let isMatched = false;
-
-// index page
-
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
 let counter1 = 0;
 let counter2 = 2;
 
+
+
+/**************/
+/* index page */
+/**************/
+
+
 app.get("/", async (req, res) => {
 
-  counter1 = 0;
-  counter2 = 2;
-  // for ease, counter is always on 0 when on start page
 
   try{
+    counter1 = 0;
+    counter2 = 2;
+    // for demo purposes, counter is always reset when on start page
 
     // get users
     getUsers().then((result) => {
@@ -77,29 +80,36 @@ app.get("/", async (req, res) => {
 
 });
 
-// if like has been pressed
+
+
+/****************************/
+/* if like has been pressed */
+/****************************/
 
 app.post("/like/:id", async (req, res) => {
   console.log("like");
 
   try{
 
+    // turns id into ObjectId instead of a string with number
     req.params.id = toId(req.params.id)
 
+    // find the user that's been liked
     const likedUser = await UserModel.findById(req.params.id).lean()
 
+    // find the admin user (which is being used as "logged in user" for demo purposes)
     const admin = await AdminUserModel.findOne({username: "adminuser"})
 
-    // put users in variable to check length
+    // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
     // find users
     getUsers().then((result) => {
   
+      // add to the counter everytime "like" is pressed aka: link is visited
       counter1++;
       counter2++;
     
-
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
@@ -108,20 +118,21 @@ app.post("/like/:id", async (req, res) => {
 
       console.log(userCount.length)
 
-      // if the counter goes beyond the amount of users in array, reset back
+      // if the counter goes beyond the amount of users in array, reset back to original
       if (counter2 == userCount.length) {
         counter1 = 0;
         counter2 = 2;
       }
 
-      console.log(likedUser)
-
+      // check if the liked user has own likes as well
       if(likedUser.likes[0]){
+        // if true, check if the like in the likedUser is equal to the admin user's id
         if(likedUser.likes[0].equals(admin._id)){
           console.log("Match!")
   
-          isMatched = true;
+          let isMatched = true;
   
+          // let handlebars know that there's a match, will insert a new template with a popup
           res.render("main", {
             layout: "index",
             data: result,
@@ -131,7 +142,7 @@ app.post("/like/:id", async (req, res) => {
         }
 
       }else{
-        console.log("nope")
+        console.log("likedUser does not have likes")
 
         res.render("main", {
           layout: "index",
