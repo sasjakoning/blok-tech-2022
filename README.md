@@ -19,7 +19,9 @@ to install this project, clone the repository using [git](https://git-scm.com/)
 
 and install it's packages using [npm](https://www.npmjs.com/)
 
-```$npm install```
+```json
+$npm install
+```
 
 This project uses Atlas [MongoDB](https://www.mongodb.com/) as it's database. To connect your own database make sure to create a .env file and unclude the link to your own database.
 
