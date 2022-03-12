@@ -52,6 +52,7 @@ body {
 
 body > main {
 	margin: 0 2em;
+	overflow: hidden;
 }
 
 /* header */
@@ -63,7 +64,7 @@ header {
 
 .navBtn {
 	position: relative;
-	z-index: 10;
+	z-index: 21;
 	width: 2em;
 	height: 1.5em;
 	background: none;
@@ -103,17 +104,18 @@ nav {
 	background: var(--text);
 	padding: 1rem;
 	transform: translateX(-100%);
-	transition: .5s;
+	/* transition: .5s; */
 
-	z-index: 9;
+	z-index: 20;
 }
 
 nav.is-open {
 	transform: translateX(0);
+	background: var(--text-color);
 }
 
 nav > ul {
-	margin-top: 2em;
+	margin-top: 5em;
 	width: 100%;
 }
 
@@ -121,9 +123,9 @@ nav > ul > li {
 	padding: .5em 0;
 }
 
-nav > ul > li:active {
-	background-color: #2C2A46;
-	color: var(--text);
+nav > ul > li > a {
+	text-decoration: none;
+	font-size: 1.5em;
 }
 
 
@@ -152,9 +154,35 @@ nav > ul > li:active {
 	align-items: center;
 
 	position: absolute;
+
+	transform-origin: bottom center;
 }
 
-.pictureContainer {
+.largeCard:first-of-type {
+	z-index: 10;
+}
+
+.cardLike {
+	animation: cardLike .5s ease-in-out forwards;
+}
+
+@keyframes cardLike {
+	to {
+		transform: rotate(30deg) translateX(30em) translateY(-20em);
+	}
+}
+
+.cardDislike {
+	animation: cardDislike .5s ease-in-out forwards;
+}
+
+@keyframes cardDislike {
+	to {
+		transform: rotate(-30deg) translateX(-30em) translateY(-20em);
+	}
+}
+
+.largeCard .pictureContainer {
     width: 100%;
     height: 55%;
     position: relative;
@@ -162,14 +190,14 @@ nav > ul > li:active {
     justify-content: center;
 }
 
-.pictureContainer > picture {
+.largeCard .pictureContainer > picture {
 	width: calc(100% - 2em);
 	margin-top: 1em;
 	display: block;
 	position: relative;
 }
 
-.pictureContainer::before {
+.largeCard .pictureContainer::before {
 	content: "";
 	position: absolute;
 	width: calc(100% - 2em);
@@ -183,7 +211,7 @@ nav > ul > li:active {
 	border-radius: 12px 12px 0 0;
 }
 
-.pictureContainer > picture > img {
+.largeCard .pictureContainer > picture > img {
 	width: 100%;
     height: 90%;
     object-fit: cover;
@@ -191,7 +219,7 @@ nav > ul > li:active {
 	border-radius: 12px;
 }
 
-.infoContainer {
+.largeCard .infoContainer {
 	position: absolute;
 	top: 2em;
 
@@ -203,7 +231,7 @@ nav > ul > li:active {
 	z-index: 2;
 }
 
-.lvl {
+.largeCard .lvl {
 	width: 2.3em;
 	height: 2.3em;
 	border: 1px solid var(--detail-yellow);
@@ -221,7 +249,7 @@ nav > ul > li:active {
 	box-shadow: var(--dropshadow);
 }
 
-.distance {
+.largeCard .distance {
 	padding: 0.3em 0.9em 0.3em 2em;
 	border: 1px solid var(--text-color);
 	border-radius: 0.6em;
@@ -233,7 +261,7 @@ nav > ul > li:active {
 	box-shadow: var(--dropshadow);
 }
 
-.distance::before {
+.largeCard .distance::before {
 	content: "";
 	position: absolute;
 	width: 1em;
@@ -246,7 +274,7 @@ nav > ul > li:active {
 	left: 0.8em;
 }
 
-.sliderBtns {
+.largeCard .sliderBtns {
 	width: 100%;
 	position: absolute;
 	bottom: 4em;
@@ -255,7 +283,7 @@ nav > ul > li:active {
 	justify-content: center;
 }
 
-.sliderBtns > span {
+.largeCard .sliderBtns > span {
 	background-color: var(--detail-lightblue);
 	width: 1em;
 	height: 1em;
@@ -267,13 +295,14 @@ nav > ul > li:active {
 
 .largeCard figcaption {
 	margin: -2em 1em 0 1em;
+	width: calc(100% - 4em);
 }
 
-.playerInfo > h2 {
+.largeCard .playerInfo > h2 {
 	font-size: 30px;
 }
 
-.playerInfo > h3 {
+.largeCard .playerInfo > h3 {
 	font-size: 18px;
 	line-height: 1;
 }
@@ -340,8 +369,16 @@ nav > ul > li:active {
 
 	position: fixed;
 	bottom: 1em;
-	z-index: 100;
+	z-index: 10;
 }
+
+.buttonContainer:first-of-type {
+	z-index: 11;
+}
+
+/* .buttonContainer:last-of-type {
+	display: none;
+} */
 
 .like, .dislike {
 	background: none;
@@ -372,4 +409,211 @@ nav > ul > li:active {
 .dislike {
 	border: 1px solid var(--detail-blue);
 	background: var(--detail-blue-background);
+}
+
+
+/****************/
+/* when matched */
+/****************/
+
+.matchBackground {
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0);
+
+	z-index: 100;
+
+	position: fixed;
+
+	top: 50%;
+	left: 50%;
+
+	transform: translate(-50%, -50%);
+
+	backdrop-filter: blur(0px);
+
+	animation: matchBackground .5s forwards ease-in-out;
+}
+
+@keyframes matchBackground {
+	to {
+		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(5px);
+	}
+}
+
+.matchPopup {
+	width: 80%;
+	height: 60%;
+	background: red;
+
+	z-index: 100;
+
+	position: fixed;
+
+	top: 50%;
+	left: 50%;
+
+	transform: translate(-50%, -50%) scale(0);
+	animation: matchPopup 0.5s 0.4s forwards ease-in-out;
+}
+
+@keyframes matchPopup {
+	0% {
+		transform: translate(-50%, -50%) scale(0);
+	}
+	60% {
+		transform: translate(-50%, -50%) scale(1.2);
+	}
+	80% {
+		transform: translate(-50%, -50%) scale(0.9);
+	}
+	90% {
+		transform: translate(-50%, -50%) scale(1.05);
+	}
+	100% {
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+.matchButtonContainer {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+
+	margin-top: 3em;
+}
+
+.matchButtonContainer button {
+	padding: 1em;
+	border-radius: 1em;
+}
+
+/****************************/
+/* small cards/matched page */
+/****************************/
+
+.cardContainer {
+	display: flex;
+	flex-wrap: wrap;
+
+	gap: 1em;
+
+	width: 100%;
+	height: 100%;
+}
+
+.smallCard {
+    background: var(--card-blue);
+    height: 27em;
+
+	width: 48%;
+
+    border-radius: 12px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	transform-origin: bottom center;
+
+	position: relative;
+}
+
+.smallCard .pictureContainer {
+    width: 100%;
+    height: 55%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.smallCard .pictureContainer > picture {
+	width: calc(100% - 2em);
+	margin-top: 1em;
+	display: block;
+	position: relative;
+}
+
+.smallCard .pictureContainer::before {
+	content: "";
+	position: absolute;
+	width: calc(100% - 2em);
+	height: 25%;
+	top: 1em;
+	background: var(--shadow-hard);
+	background: linear-gradient(180deg, var(--shadow-hard) 0%, rgba(255,255,255,0) 100%);
+
+	z-index: 1;
+
+	border-radius: 12px 12px 0 0;
+}
+
+.smallCard .pictureContainer > picture > img {
+	width: 100%;
+    height: 90%;
+    object-fit: cover;
+
+	border-radius: 12px;
+}
+
+.smallCard .infoContainer {
+	position: absolute;
+	top: 2em;
+
+	display: flex;
+	justify-content: flex-end;
+
+	width: calc(100% - 4em);
+
+	z-index: 2;
+}
+
+.smallCard .lvl {
+	width: 1.3em;
+	height: 1.3em;
+	border: 1px solid var(--detail-yellow);
+
+	background-color: var(--detail-yellow-background);
+
+	border-radius: 50%;
+
+	text-align: center;
+	line-height: 1.3em;
+	font-size: 14px;
+
+	color: var(--detail-yellow);
+
+	box-shadow: var(--dropshadow);
+}
+
+.smallCard figcaption {
+	margin-top: -1em;
+	width: calc(100% - 2em);
+}
+
+.smallCard .playerInfo > h2 {
+	font-size: 20px;
+}
+
+.smallCard .playerInfo > h3 {
+	font-size: 14px;
+	line-height: 1.2;
+}
+
+.smallCard .matchChat {
+	margin-top: 1em;
+	padding: 0.3em 0.9em;
+    border-radius: 0.6em;
+
+	width: 100%;
+
+	background-color: var(--detail-yellow-background);
+	border: 1px solid var(--detail-yellow);
+	color: var(--text-color);
+
+	box-shadow: var(--dropshadow);
+
 }

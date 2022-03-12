@@ -1,8 +1,8 @@
 
-{{#each data}}
+{{!-- {{#with data}} --}}
 <section class="buttonContainer">
 
-    <form class="form-dislike" method="GET" action="/dislike/{{this._id}}">
+    <form class="form-dislike" method="POST" action="/dislike/{{data.0._id}}">
 
         <button class="dislike">
             <img src="../images/dislike.svg" alt="" />
@@ -10,7 +10,7 @@
 
     </form>
 
-    <form class="form-like" method="GET" action="/like/{{this._id}}">
+    <form class="form-like" method="POST" action="/like/{{data.0._id}}">
 
         <button class="like">
             <img src="../images/like.svg" alt="">
@@ -20,4 +20,4 @@
 
 </section>
 
-{{/each}}
+{{!-- {{/with}} --}}

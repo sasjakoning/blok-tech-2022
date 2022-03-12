@@ -8,7 +8,10 @@ const bodyParser = require("body-parser");
 // const multer = require("multer");
 const db = require("./config/connect.js");
 const UserModel = require("./models/user");
+const AdminUserModel = require("./models/adminUser");
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
+const toId = mongoose.Types.ObjectId;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -19,8 +22,7 @@ app.engine(
     extname: "hbs",
     defaultLayout: "planB",
     partialsDir: __dirname + "/views/partials/",
-    helpers: require("./helpers/handlebars-helpers")
-  }),
+  })
 );
 
 app.set("view engine", "hbs");
@@ -29,114 +31,257 @@ app.use(express.static("public"));
 
 db.connectDb();
 
-// index page
+// get all users from database etc
+const getUsers = async () => {
+  // find the admin user (which is being used as "logged in user" for demo purposes)
+  const admin = await AdminUserModel.findOne({ username: "adminuser" });
+
+  // find which users admin has matched
+  const adminMatches = admin.matches;
+
+  // return all users exept the already matched ones
+  const usersList = await UserModel.find({
+    _id: { $nin: adminMatches },
+  }).lean();
+
+  return [usersList, admin];
+};
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
-let counter = 0;
+let counter1 = 0;
+let counter2 = 2;
+
+/**************/
+/* index page */
+/**************/
 
 app.get("/", async (req, res) => {
+  try {
+    counter1 = 0;
+    counter2 = 2;
+    // for demo purposes, counter is always reset when on start page
 
-  counter = 0;
-  // for ease, counter is always on 0 when on start page
+    // get users
+    getUsers().then(([result, admin]) => {
+      ///////////////////////////////////////////////////////////////////////
 
-  try{
-    let users = await UserModel.find({}, null, {skip: counter, limit:1}).lean();
+      // code to remove matches from admin database (demo purposes)
 
-    console.log(`current amount of users is ${users.length}`)
+      // AdminUserModel.updateMany(
+      //   {name: "admin"},
+      //   {$set: {matches: []}},
+      //   (err, affected) => {
+      //     console.log("affected", affected)
+      //   }
+      // )
 
-    console.log(`counter is on ${counter}`)
+      ///////////////////////////////////////////////////////////////////////
 
+      console.log(`counter1 is ${counter1}`);
+      console.log(`counter2 is ${counter2}`);
 
-    res.render("main", {
-      layout: "index",
-      data: users
-    })
+      // only return two users from the array
+      result = result.slice(counter1, counter2);
 
-  } catch(err){
-    console.log(err)
+      // send result to handlebars
+      res.render("main", {
+        layout: "index",
+        data: result,
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
-
 });
 
-// if like has been pressed
+/****************************/
+/* if like has been pressed */
+/****************************/
 
-app.get("/like/:id", async (req, res) => {
+app.post("/like/:id", async (req, res) => {
   console.log("like");
 
-  try{
+  try {
+    // turns id into ObjectId instead of a string with number
+    req.params.id = toId(req.params.id);
 
-    counter++;
+    // find the user that's been liked
+    const likedUser = await UserModel.findById(req.params.id).lean();
 
-    // find the users from database, serve only one, skip users based on counter amount
-    let users = await UserModel.find({}, null, {skip: counter, limit: 1}).lean();
-
-    console.log(`current amount of users is ${users.length}`)
-
-    console.log(`counter is on ${counter}`)
-
-    console.log(`current user id is ${users._id}`)
-
-    // find actual amount of users in array
+    // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    console.log(`total amount of users is ${userCount.length}`)
+    // find users
+    getUsers().then(([result, admin]) => {
+      // add to the counter everytime "like" is pressed aka: link is visited
+      console.log("Adding to counter");
+      counter1++;
+      counter2++;
 
-    // if the counter goes beyond the amount of users in array, reset back
-    if (counter == userCount.length - 1) {
-      counter = -1;
-    }
+      console.log(`counter1 is ${counter1}`);
+      console.log(`counter2 is ${counter2}`);
 
-    res.render("main", {
-      layout: "index",
-      data: users
-    })
+      // only send 2 users
+      result = result.slice(counter1, counter2);
 
-  } catch(err){
-    console.log(err)
+      console.log(userCount.length);
+
+      // if the counter goes beyond the amount of users in array, reset back to original
+      if (counter2 == userCount.length) {
+        counter1 = 0;
+        counter2 = 2;
+      }
+
+      // add likeduser to likes array of admin (Not included in this feature)
+      // admin.likes.push(likedUser)
+      // admin.save();
+
+      // check if the liked user has own likes as well
+      if (likedUser.likes[0]) {
+        // if true, check if the like in the likedUser is equal to the admin user's id
+        if (likedUser.likes[0].equals(admin._id)) {
+          console.log("Match!");
+
+          let isMatched = true;
+
+          // fix for database update which offsets the array
+          console.log("pulling from counter");
+          counter1--;
+          counter2--;
+
+          if (admin.matches.includes(likedUser._id)) {
+            console.log("admin matches includes the id of liked user");
+          } else {
+            console.log("admin matches does not yet include this liked user");
+
+            console.log("adding liked user to database");
+
+            admin.matches.push(likedUser);
+            admin.save();
+          }
+
+          // let handlebars know that there's a match, will insert a new template with a popup
+          res.render("main", {
+            layout: "index",
+            data: result,
+            likedUser: likedUser,
+            isMatched: isMatched,
+          });
+        }
+      } else {
+        console.log("likedUser does not have likes");
+
+        res.render("main", {
+          layout: "index",
+          data: result,
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
   }
-
 });
 
-// if dislike has been pressed
+/*******************************/
+/* if dislike has been pressed */
+/*******************************/
 
-app.get("/dislike/:id", async (req, res) => {
+app.post("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
-  try{
+  try {
+    // turns id into ObjectId instead of a string with number
+    req.params.id = toId(req.params.id);
 
-    counter++;
+    // find the user that's been liked
+    const disLikedUser = await UserModel.findById(req.params.id).lean();
 
-    // find the users from database, serve only one, skip users based on counter amount
-    let users = await UserModel.find({}, null, {skip: counter, limit: 1}).lean();
-
-    console.log(`current amount of users is ${users.length}`)
-
-    console.log(`counter is on ${counter}`)
-
-    console.log(`current user id is ${users._id}`)
-
-    // find actual amount of users in array
+    // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    console.log(`total amount of users is ${userCount.length}`)
+    // find users
+    getUsers().then(([result, admin]) => {
+      // add to the counter everytime "dislike" is pressed aka: link is visited
+      counter1++;
+      counter2++;
 
-    // if the counter goes beyond the amount of users in array, reset back
-    if (counter == userCount.length - 1) {
-      counter = -1;
-    }
+      console.log(`counter1 is ${counter1}`);
+      console.log(`counter2 is ${counter2}`);
 
-    res.render("main", {
-      layout: "index",
-      data: users
-    })
+      // only send 2 users
+      result = result.slice(counter1, counter2);
 
-  } catch(err){
-    console.log(err)
+      console.log(userCount.length);
+
+      // if the counter goes beyond the amount of users in array, reset back to original
+      if (counter2 == userCount.length) {
+        counter1 = 0;
+        counter2 = 2;
+      }
+
+      // add likeduser to likes array of admin (Not included in this feature)
+      // admin.dislikes.push(likedUser)
+      // admin.save();
+
+      res.render("main", {
+        layout: "index",
+        data: result,
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
 });
 
+/****************/
+/* view matches */
+/****************/
 
-// create new users to add to database
+app.get("/matches", async (req, res) => {
+  const admin = await AdminUserModel.findOne({}).populate("matches").lean();
+
+  const adminMatches = admin.matches;
+
+  console.log(admin.matches);
+
+  res.render("matches", {
+    layout: "index",
+    data: adminMatches,
+  });
+});
+
+/****************/
+/* delete match */
+/****************/
+
+app.post("/matches/:id", async (req, res) => {
+  // turns id into ObjectId instead of a string with number
+  req.params.id = toId(req.params.id);
+
+  // find the user that's been liked
+  const deletedUser = await UserModel.findById(req.params.id).lean();
+
+  console.log("deleted user is");
+  console.log(deletedUser);
+
+  AdminUserModel.updateMany(
+    { name: "admin" },
+    { $pull: { matches: deletedUser._id } },
+    (err, affected) => {
+      console.log("affected", affected);
+    }
+  );
+
+  const admin = await AdminUserModel.findOne({}).populate("matches").lean();
+
+  const adminMatches = admin.matches;
+
+  res.redirect("/matches");
+});
+
+/**************************************************/
+/* create new users to add to database (dev tool) */
+/**************************************************/
 
 app.get("/create-user", (req, res) => {
   res.render("createUser", {
@@ -155,9 +300,39 @@ app.post("/api/user", (req, res) => {
   });
 });
 
+/******************************************************/
+/* reset matches for adminuser in database (dev tool) */
+/******************************************************/
+
+app.get("/reset", async (req, res) => {
+  try {
+
+    AdminUserModel.updateMany(
+      { name: "admin" },
+      { $set: { matches: [] } },
+      (err, affected) => {
+        console.log("affected", affected);
+      }
+    );
+
+    res.render("reset", {
+      layout: "index"
+    });
+    
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+/********************************************/
+/* incase user lands on a non existant page */
+/********************************************/
+
 app.get("*", (req, res) => {
   res.send(`${404} not found`);
 });
+
+// server
 
 app.listen(port, () => console.log(`App listening to port ${port}`));
 

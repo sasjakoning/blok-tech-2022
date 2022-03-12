@@ -1,5 +1,8 @@
 {{>header}}
 <main>
+    {{#if isMatched}}
+        {{>matchPopup}}
+    {{/if}}
     {{>largeCard}}
 </main>
 <footer>

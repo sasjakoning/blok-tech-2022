@@ -1,8 +1,5 @@
-{{!-- <p>{{foo}}{{bar}}</p> --}}
-
 {{#each data}}
-
-<figure class="largeCard">
+<figure class="smallCard">
     <div class="pictureContainer">
 
         <picture>
@@ -12,17 +9,9 @@
             <img src="/images/user-image1.jpg" alt="" />
         </picture>
 
-        <div class="sliderBtns">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
     </div>
 
     <div class="infoContainer">
-        {{!-- distance --}}
-        <p class="distance">10km</p>
         <!-- lvl -->
         <p class="lvl">5</p>
     </div>
@@ -36,16 +25,14 @@
             <h3>{{this.firstname}} {{this.lastname}}</h3>
         </div>
 
-        <div class="tags">
-            <p class="playerClass">Rogue</p>
-            <p class="playerElement">Shadow</p>
-        </div>
+        <button class="matchChat">Chat</button>
 
-        <div class="aboutMe">
-            <h3>About me:</h3>
-            <p>{{this.aboutme}}</p>
-        </div>
+        <form method="POST" action="/matches/{{this._id}}">
+
+            <button class="matchChat">Delete Match</button>
+
+        </form>
+
     </figcaption>
 </figure>
-
 {{/each}}
