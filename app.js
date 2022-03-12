@@ -11,7 +11,7 @@ const UserModel = require("./models/user");
 const AdminUserModel = require("./models/adminUser");
 const mongoose = require("mongoose");
 const { ObjectId } = require("mongodb");
-const toId = mongoose.Types.ObjectId
+const toId = mongoose.Types.ObjectId;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,8 +22,7 @@ app.engine(
     extname: "hbs",
     defaultLayout: "planB",
     partialsDir: __dirname + "/views/partials/",
-    helpers: require("./helpers/handlebars-helpers")
-  }),
+  })
 );
 
 app.set("view engine", "hbs");
@@ -32,49 +31,41 @@ app.use(express.static("public"));
 
 db.connectDb();
 
-
 // get all users from database etc
 const getUsers = async () => {
-
   // find the admin user (which is being used as "logged in user" for demo purposes)
-  const admin = await AdminUserModel.findOne({username: "adminuser"})
+  const admin = await AdminUserModel.findOne({ username: "adminuser" });
 
   // find which users admin has matched
-  const adminMatches = admin.matches
-  const adminLikes = admin.likes
+  const adminMatches = admin.matches;
 
   // return all users exept the already matched ones
-  const usersList = await UserModel.find({_id: {$nin: adminMatches, $nin: adminLikes}}).lean()
-  // const usersList = await UserModel.find({}).lean()
+  const usersList = await UserModel.find({
+    _id: { $nin: adminMatches },
+  }).lean();
 
   return [usersList, admin];
-}
+};
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
 let counter1 = 0;
 let counter2 = 2;
 
-
-
 /**************/
 /* index page */
 /**************/
 
-
 app.get("/", async (req, res) => {
-
-
-  try{
+  try {
     counter1 = 0;
     counter2 = 2;
     // for demo purposes, counter is always reset when on start page
 
     // get users
     getUsers().then(([result, admin]) => {
-
       ///////////////////////////////////////////////////////////////////////
 
-      // code to remove matches and likes from admin database (demo purposes)
+      // code to remove matches from admin database (demo purposes)
 
       // AdminUserModel.updateMany(
       //   {name: "admin"},
@@ -84,33 +75,23 @@ app.get("/", async (req, res) => {
       //   }
       // )
 
-      // AdminUserModel.updateMany(
-      //   {name: "admin"},
-      //   {$set: {likes: []}},
-      //   (err, affected) => {
-      //     console.log("affected", affected)
-      //   }
-      // )
-
       ///////////////////////////////////////////////////////////////////////
 
-      console.log(`counter1 is ${counter1}`)
-      console.log(`counter2 is ${counter2}`)
+      console.log(`counter1 is ${counter1}`);
+      console.log(`counter2 is ${counter2}`);
 
       // only return two users from the array
-      result = result.slice(counter1, counter2)
-      
+      result = result.slice(counter1, counter2);
+
       // send result to handlebars
       res.render("main", {
         layout: "index",
-        data: result
-      })
-    })
-
-  } catch(err){
-    console.log(err)
+        data: result,
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
-
 });
 
 /****************************/
@@ -120,31 +101,30 @@ app.get("/", async (req, res) => {
 app.post("/like/:id", async (req, res) => {
   console.log("like");
 
-  try{
-
+  try {
     // turns id into ObjectId instead of a string with number
-    req.params.id = toId(req.params.id)
+    req.params.id = toId(req.params.id);
 
     // find the user that's been liked
-    const likedUser = await UserModel.findById(req.params.id).lean()
+    const likedUser = await UserModel.findById(req.params.id).lean();
 
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
     // find users
     getUsers().then(([result, admin]) => {
-  
       // add to the counter everytime "like" is pressed aka: link is visited
+      console.log("Adding to counter");
       counter1++;
       counter2++;
-    
-      console.log(`counter1 is ${counter1}`)
-      console.log(`counter2 is ${counter2}`)
+
+      console.log(`counter1 is ${counter1}`);
+      console.log(`counter2 is ${counter2}`);
 
       // only send 2 users
-      result = result.slice(counter1, counter2)
+      result = result.slice(counter1, counter2);
 
-      console.log(userCount.length)
+      console.log(userCount.length);
 
       // if the counter goes beyond the amount of users in array, reset back to original
       if (counter2 == userCount.length) {
@@ -156,27 +136,27 @@ app.post("/like/:id", async (req, res) => {
       // admin.likes.push(likedUser)
       // admin.save();
 
-
       // check if the liked user has own likes as well
-      if(likedUser.likes[0]){
+      if (likedUser.likes[0]) {
         // if true, check if the like in the likedUser is equal to the admin user's id
-        if(likedUser.likes[0].equals(admin._id)){
-          console.log("Match!")
-  
+        if (likedUser.likes[0].equals(admin._id)) {
+          console.log("Match!");
+
           let isMatched = true;
 
           // fix for database update which offsets the array
+          console.log("pulling from counter");
           counter1--;
           counter2--;
 
-          if(admin.matches.includes(likedUser._id)){
-            console.log("admin matches includes the id of liked user")
-          }else {
-            console.log("admin matches does not yet include this liked user")
+          if (admin.matches.includes(likedUser._id)) {
+            console.log("admin matches includes the id of liked user");
+          } else {
+            console.log("admin matches does not yet include this liked user");
 
-            console.log("adding liked user to database")
+            console.log("adding liked user to database");
 
-            admin.matches.push(likedUser)
+            admin.matches.push(likedUser);
             admin.save();
           }
 
@@ -185,58 +165,53 @@ app.post("/like/:id", async (req, res) => {
             layout: "index",
             data: result,
             likedUser: likedUser,
-            isMatched: isMatched
-          })
+            isMatched: isMatched,
+          });
         }
-
-      }else{
-        console.log("likedUser does not have likes")
+      } else {
+        console.log("likedUser does not have likes");
 
         res.render("main", {
           layout: "index",
-          data: result
-        })
+          data: result,
+        });
       }
-
-    })
-    
-
-  } catch(err){
-    console.log(err)
+    });
+  } catch (err) {
+    console.log(err);
   }
-
 });
 
-// if dislike has been pressed
+/*******************************/
+/* if dislike has been pressed */
+/*******************************/
 
 app.post("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
-  try{
-
+  try {
     // turns id into ObjectId instead of a string with number
-    req.params.id = toId(req.params.id)
+    req.params.id = toId(req.params.id);
 
     // find the user that's been liked
-    const disLikedUser = await UserModel.findById(req.params.id).lean()
+    const disLikedUser = await UserModel.findById(req.params.id).lean();
 
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
     // find users
     getUsers().then(([result, admin]) => {
-  
       // add to the counter everytime "dislike" is pressed aka: link is visited
       counter1++;
       counter2++;
-    
-      console.log(`counter1 is ${counter1}`)
-      console.log(`counter2 is ${counter2}`)
+
+      console.log(`counter1 is ${counter1}`);
+      console.log(`counter2 is ${counter2}`);
 
       // only send 2 users
-      result = result.slice(counter1, counter2)
+      result = result.slice(counter1, counter2);
 
-      console.log(userCount.length)
+      console.log(userCount.length);
 
       // if the counter goes beyond the amount of users in array, reset back to original
       if (counter2 == userCount.length) {
@@ -248,39 +223,65 @@ app.post("/dislike/:id", async (req, res) => {
       // admin.dislikes.push(likedUser)
       // admin.save();
 
-
       res.render("main", {
         layout: "index",
-        data: result
-      })
-
-    })
-    
-
-  } catch(err){
-    console.log(err)
+        data: result,
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
 });
 
-// view matches
+/****************/
+/* view matches */
+/****************/
 
 app.get("/matches", async (req, res) => {
+  const admin = await AdminUserModel.findOne({}).populate("matches").lean();
 
-  const admin = await AdminUserModel.findOne({}).populate("likes").lean()
+  const adminMatches = admin.matches;
 
-  const adminLikes = admin.likes[0]
-
-  console.log(adminLikes)
-
+  console.log(admin.matches);
 
   res.render("matches", {
     layout: "index",
-    data: adminLikes
-  })
-})
+    data: adminMatches,
+  });
+});
 
+/****************/
+/* delete match */
+/****************/
 
-// create new users to add to database
+app.post("/matches/:id", async (req, res) => {
+  // turns id into ObjectId instead of a string with number
+  req.params.id = toId(req.params.id);
+
+  // find the user that's been liked
+  const deletedUser = await UserModel.findById(req.params.id).lean();
+
+  console.log("deleted user is");
+  console.log(deletedUser);
+
+  AdminUserModel.updateMany(
+    { name: "admin" },
+    { $pull: { matches: deletedUser._id } },
+    (err, affected) => {
+      console.log("affected", affected);
+    }
+  );
+
+  const admin = await AdminUserModel.findOne({}).populate("matches").lean();
+
+  const adminMatches = admin.matches;
+
+  res.redirect("/matches");
+});
+
+/**************************************************/
+/* create new users to add to database (dev tool) */
+/**************************************************/
 
 app.get("/create-user", (req, res) => {
   res.render("createUser", {
@@ -299,9 +300,39 @@ app.post("/api/user", (req, res) => {
   });
 });
 
+/******************************************************/
+/* reset matches for adminuser in database (dev tool) */
+/******************************************************/
+
+app.get("/reset", async (req, res) => {
+  try {
+
+    AdminUserModel.updateMany(
+      { name: "admin" },
+      { $set: { matches: [] } },
+      (err, affected) => {
+        console.log("affected", affected);
+      }
+    );
+
+    res.render("reset", {
+      layout: "index"
+    });
+    
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+/********************************************/
+/* incase user lands on a non existant page */
+/********************************************/
+
 app.get("*", (req, res) => {
   res.send(`${404} not found`);
 });
+
+// server
 
 app.listen(port, () => console.log(`App listening to port ${port}`));
 
