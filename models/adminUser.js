@@ -27,7 +27,8 @@ const AdminUserSchema = new Schema({
         required: [false]
     },
     likes: [{type: mongoose.Types.ObjectId, ref: "user"}],
-    dislikes: [{type: mongoose.Types.ObjectId, ref: "user"}]
+    dislikes: [{type: mongoose.Types.ObjectId, ref: "user"}],
+    matches: [{type: mongoose.Types.ObjectId, ref: "user"}]
 })
 
 const AdminUserModel = mongoose.model("adminuser", AdminUserSchema)

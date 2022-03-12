@@ -32,11 +32,19 @@ app.use(express.static("public"));
 db.connectDb();
 
 
-// get all users from database
+// get all users from database etc
 const getUsers = async () => {
-  const usersList = UserModel.find({}).lean();
 
-  return usersList;
+  // find the admin user (which is being used as "logged in user" for demo purposes)
+  const admin = await AdminUserModel.findOne({username: "adminuser"})
+
+  // find which users admin has matched
+  const adminMatches = admin.matches
+
+  // return all users exept the already matched ones
+  const usersList = await UserModel.find({_id: {$nin: adminMatches}}).lean()
+
+  return [usersList, admin];
 }
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
@@ -59,7 +67,7 @@ app.get("/", async (req, res) => {
     // for demo purposes, counter is always reset when on start page
 
     // get users
-    getUsers().then((result) => {
+    getUsers().then(([result, admin]) => {
 
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
@@ -97,14 +105,14 @@ app.post("/like/:id", async (req, res) => {
     // find the user that's been liked
     const likedUser = await UserModel.findById(req.params.id).lean()
 
-    // find the admin user (which is being used as "logged in user" for demo purposes)
-    const admin = await AdminUserModel.findOne({username: "adminuser"})
-
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
     // find users
-    getUsers().then((result) => {
+    getUsers().then(([result, admin]) => {
+
+      console.log("admin is")
+      console.log(admin)
   
       // add to the counter everytime "like" is pressed aka: link is visited
       counter1++;
@@ -131,7 +139,26 @@ app.post("/like/:id", async (req, res) => {
           console.log("Match!")
   
           let isMatched = true;
-  
+
+          // if(admin.matches.length > 0){
+          //   console.log("matches is more than 0")
+
+          //   admin.matches.forEach(match => {
+
+          //     if(match.equals(likedUser._id)){
+          //       console.log("already matched")
+          //     }
+
+          //   });
+
+          // }else {
+          //   console.log("not matched yet, adding")
+          //   admin.matches.push(likedUser)
+          //   admin.save();
+          // }
+
+
+
           // let handlebars know that there's a match, will insert a new template with a popup
           res.render("main", {
             layout: "index",
