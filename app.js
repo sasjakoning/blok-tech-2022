@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-// let port = process.env.PORT;
-// if (port == null || port == "") {
-//   port = 3000;
-// }
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
 
 const handlebars = require("express-handlebars");
 
@@ -338,6 +338,6 @@ app.get("*", (req, res) => {
 
 // server
 
-app.listen(process.env.PORT || 3000);
+app.listen(port, () => console.log(`App listening to port ${port}`));
 
 // useful: https://waelyasmina.medium.com/a-guide-into-using-handlebars-with-your-express-js-application-22b944443b65
