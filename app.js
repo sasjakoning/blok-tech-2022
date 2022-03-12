@@ -337,6 +337,6 @@ app.get("*", (req, res) => {
 
 // server
 
-app.listen(port, () => console.log(`App listening to port ${port}`));
+app.listen(rocess.env.PORT || 5000, () => console.log(`App listening to port ${port}`));
 
 // useful: https://waelyasmina.medium.com/a-guide-into-using-handlebars-with-your-express-js-application-22b944443b65
