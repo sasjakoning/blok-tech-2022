@@ -19,7 +19,7 @@ to install this project, clone the repository using [git](https://git-scm.com/)
 
 and install it's packages using [npm](https://www.npmjs.com/)
 
-```json
+```js
 $npm install
 ```
 
