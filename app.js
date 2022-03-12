@@ -10,6 +10,7 @@ const db = require("./config/connect.js");
 const UserModel = require("./models/user");
 const AdminUserModel = require("./models/adminUser");
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 const toId = mongoose.Types.ObjectId
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -43,6 +44,7 @@ const getUsers = async () => {
 
   // return all users exept the already matched ones
   const usersList = await UserModel.find({_id: {$nin: adminMatches}}).lean()
+  // const usersList = await UserModel.find({}).lean()
 
   return [usersList, admin];
 }
@@ -68,6 +70,15 @@ app.get("/", async (req, res) => {
 
     // get users
     getUsers().then(([result, admin]) => {
+
+      // code to remove matches from admin database (demo purposes)
+      // AdminUserModel.updateMany(
+      //   {name: "admin"},
+      //   {$set: {matches: []}},
+      //   (err, affected) => {
+      //     console.log("affected", affected)
+      //   }
+      // )
 
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
@@ -110,9 +121,6 @@ app.post("/like/:id", async (req, res) => {
 
     // find users
     getUsers().then(([result, admin]) => {
-
-      console.log("admin is")
-      console.log(admin)
   
       // add to the counter everytime "like" is pressed aka: link is visited
       counter1++;
@@ -139,6 +147,20 @@ app.post("/like/:id", async (req, res) => {
           console.log("Match!")
   
           let isMatched = true;
+
+          counter1--;
+          counter2--;
+
+          if(admin.matches.includes(likedUser._id)){
+            console.log("admin matches includes the id of liked user")
+          }else {
+            console.log("admin matches does not yet include this liked user")
+
+            console.log("adding liked user to database")
+
+            admin.matches.push(likedUser)
+            admin.save();
+          }
 
           // if(admin.matches.length > 0){
           //   console.log("matches is more than 0")

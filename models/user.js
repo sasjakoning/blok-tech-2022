@@ -79,7 +79,67 @@ const UserModel = mongoose.model("user", UserSchema)
 //         lastname: "Goodwin",
 //         charactername: "Elian",
 //         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
-//     }
+//     },
+//     {
+//         firstname: "Ellice",
+//         lastname: "Martins",
+//         charactername: "Brogan",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Aviana",
+//         lastname: "William",
+//         charactername: "Leo",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Kuba",
+//         lastname: "Frencis",
+//         charactername: "Reis",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Eamonn",
+//         lastname: "Mcknight",
+//         charactername: "Cian",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Kasim",
+//         lastname: "Stevenson",
+//         charactername: "Haley",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Bethany",
+//         lastname: "Gallagher",
+//         charactername: "Teresa",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Riya",
+//         lastname: "Rossi",
+//         charactername: "Nathan",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Dev",
+//         lastname: "Villalobos",
+//         charactername: "Josh",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Evie-Mai",
+//         lastname: "Bevan",
+//         charactername: "Heena",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
+//     {
+//         firstname: "Asiya",
+//         lastname: "Redfern",
+//         charactername: "Giulia",
+//         aboutme: "magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis"
+//     },
 // ])
 
 
