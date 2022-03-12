@@ -41,9 +41,10 @@ const getUsers = async () => {
 
   // find which users admin has matched
   const adminMatches = admin.matches
+  const adminLikes = admin.likes
 
   // return all users exept the already matched ones
-  const usersList = await UserModel.find({_id: {$nin: adminMatches}}).lean()
+  const usersList = await UserModel.find({_id: {$nin: adminMatches, $nin: adminLikes}}).lean()
   // const usersList = await UserModel.find({}).lean()
 
   return [usersList, admin];
@@ -71,7 +72,10 @@ app.get("/", async (req, res) => {
     // get users
     getUsers().then(([result, admin]) => {
 
-      // code to remove matches from admin database (demo purposes)
+      ///////////////////////////////////////////////////////////////////////
+
+      // code to remove matches and likes from admin database (demo purposes)
+
       // AdminUserModel.updateMany(
       //   {name: "admin"},
       //   {$set: {matches: []}},
@@ -79,6 +83,16 @@ app.get("/", async (req, res) => {
       //     console.log("affected", affected)
       //   }
       // )
+
+      // AdminUserModel.updateMany(
+      //   {name: "admin"},
+      //   {$set: {likes: []}},
+      //   (err, affected) => {
+      //     console.log("affected", affected)
+      //   }
+      // )
+
+      ///////////////////////////////////////////////////////////////////////
 
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
@@ -98,8 +112,6 @@ app.get("/", async (req, res) => {
   }
 
 });
-
-
 
 /****************************/
 /* if like has been pressed */
@@ -140,6 +152,11 @@ app.post("/like/:id", async (req, res) => {
         counter2 = 2;
       }
 
+      // add likeduser to likes array of admin (Not included in this feature)
+      // admin.likes.push(likedUser)
+      // admin.save();
+
+
       // check if the liked user has own likes as well
       if(likedUser.likes[0]){
         // if true, check if the like in the likedUser is equal to the admin user's id
@@ -148,6 +165,7 @@ app.post("/like/:id", async (req, res) => {
   
           let isMatched = true;
 
+          // fix for database update which offsets the array
           counter1--;
           counter2--;
 
@@ -161,25 +179,6 @@ app.post("/like/:id", async (req, res) => {
             admin.matches.push(likedUser)
             admin.save();
           }
-
-          // if(admin.matches.length > 0){
-          //   console.log("matches is more than 0")
-
-          //   admin.matches.forEach(match => {
-
-          //     if(match.equals(likedUser._id)){
-          //       console.log("already matched")
-          //     }
-
-          //   });
-
-          // }else {
-          //   console.log("not matched yet, adding")
-          //   admin.matches.push(likedUser)
-          //   admin.save();
-          // }
-
-
 
           // let handlebars know that there's a match, will insert a new template with a popup
           res.render("main", {
@@ -215,31 +214,47 @@ app.post("/dislike/:id", async (req, res) => {
 
   try{
 
-    counter1++;
-    counter2++;
-    
+    // turns id into ObjectId instead of a string with number
+    req.params.id = toId(req.params.id)
+
+    // find the user that's been liked
+    const disLikedUser = await UserModel.findById(req.params.id).lean()
+
+    // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    getUsers().then((result) => {
-
+    // find users
+    getUsers().then(([result, admin]) => {
+  
+      // add to the counter everytime "dislike" is pressed aka: link is visited
+      counter1++;
+      counter2++;
+    
       console.log(`counter1 is ${counter1}`)
       console.log(`counter2 is ${counter2}`)
 
+      // only send 2 users
       result = result.slice(counter1, counter2)
+
+      console.log(userCount.length)
+
+      // if the counter goes beyond the amount of users in array, reset back to original
+      if (counter2 == userCount.length) {
+        counter1 = 0;
+        counter2 = 2;
+      }
+
+      // add likeduser to likes array of admin (Not included in this feature)
+      // admin.dislikes.push(likedUser)
+      // admin.save();
+
 
       res.render("main", {
         layout: "index",
         data: result
       })
+
     })
-
-    console.log(userCount.length)
-
-    // if the counter goes beyond the amount of users in array, reset back
-    if (counter2 == userCount.length - 1) {
-      counter1 = 0;
-      counter2 = 2;
-    }
     
 
   } catch(err){

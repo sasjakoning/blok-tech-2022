@@ -40,7 +40,7 @@ dislikeForm.addEventListener("submit", (e) => {
 
     card.classList.add("cardDislike")
     setTimeout(() => {
-        likeForm.submit()
+        dislikeForm.submit()
     }, 500);
 })
 
