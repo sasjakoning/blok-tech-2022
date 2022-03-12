@@ -8,8 +8,24 @@ In this repository I'll be working on a feature for a matching application. This
 
 To learn more about tech, checkout the [repository](https://github.com/cmda-bt/pt-course-21-22).
 
-## Wiki
-If you want to read more about this project and it's process, check out the [wiki](https://github.com/sasjakoning/blok-tech-2022/wiki)
+## How was Battle Matcher created?
+My goal was to create a feature in which you can swipe through cards liking and disliking people.
+
+I started off by installing Node.js and the npm cli. To get things running on a local server I installed Express and added app.js as my main backend file. I made express listen to my port of 3000 and got it going. 
+
+After doing the basics, I started writing my html using Handlebars. Handlebars is a templating engine in which I can make different partials that I can combine and serve as one html file. Handlebars offers some handy options like forEach and ifElse.
+
+In my app.js I created different routes using app.get and post and displayed the html pages using res.render with handlebars as the rendering engine.
+
+I wanted to display several cards with content pulled from a database so I installed mongoDB and mongoose and created a mongoDb Atlas account and database. 
+
+I added different users to the database and an admin user I would use as the "logged in" user. The admin user has an empty array of matches in which i can add objectId's of users.
+
+In the backend I made sure to check if the liked user likes the admin user back, in which case there would be a match. Handlebars would check if a match has happened, and would display a popup in which the user can choose to chat(not included in this feature) or continue swiping.
+
+When a user has been added to matches they will no longer be displayed while swiping.
+
+On a different page, the admin user can check out their matches in a list and remove them if needed. For demo purposes, a link is available in the menu to reset the admin users matches.
 
 ## Installing this project
 
@@ -61,6 +77,9 @@ npm run startdev
 
 ### Closing the app
 To close the app, press `ctrl + C`
+
+## Wiki
+If you want to read more about this project and it's process, check out the [wiki](https://github.com/sasjakoning/blok-tech-2022/wiki)
 
 ## Helpful links
 Below are some links to resources I found helpful during this project:
