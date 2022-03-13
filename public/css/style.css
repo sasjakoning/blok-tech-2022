@@ -55,7 +55,9 @@ body > main {
 	overflow: hidden;
 }
 
+/**********/
 /* header */
+/**********/
 
 header {
 	display: flex;
@@ -139,7 +141,9 @@ nav > ul > li > a {
 	margin: 1em;
 }
 
-/* card */
+/**************/
+/* large card */
+/**************/
 
 .largeCard {
     background: var(--card-blue);
@@ -291,7 +295,7 @@ nav > ul > li > a {
 	border-radius: 50%;
 }
 
-/* figcaption */
+/* figcaption in large card */
 
 .largeCard figcaption {
 	margin: -2em 1em 0 1em;
@@ -307,7 +311,7 @@ nav > ul > li > a {
 	line-height: 1;
 }
 
-/* tags */
+/* tags in large card */
 
 .tags {
 	margin-top: 1.2em;
@@ -335,7 +339,7 @@ nav > ul > li > a {
 	color: var(--detail-red);
 }
 
-/* --- */
+/* about me in large card */
 
 .aboutMe {
 	margin-top: 2em;
@@ -376,9 +380,6 @@ nav > ul > li > a {
 	z-index: 11;
 }
 
-/* .buttonContainer:last-of-type {
-	display: none;
-} */
 
 .like, .dislike {
 	background: none;
@@ -410,6 +411,7 @@ nav > ul > li > a {
 	border: 1px solid var(--detail-blue);
 	background: var(--detail-blue-background);
 }
+
 
 
 /****************/
@@ -490,6 +492,7 @@ nav > ul > li > a {
 	padding: 1em;
 	border-radius: 1em;
 }
+
 
 /****************************/
 /* small cards/matched page */
