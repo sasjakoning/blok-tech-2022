@@ -1,14 +1,14 @@
-# Battle Matcher
+# :sparkles: Battle Matcher
 Tired of Tinder? Battle Matcher combines the struggle of matching with the fun of gaming! You can match with people based on their character and skills and fight together to gain higher levels and fight greater enemies.
 
 If you've ever had trouble starting conversations, this is the app for you.
 
-## What is this project? What is it for?
+## :question: What is this project? What is it for?
 In this repository I'll be working on a feature for a matching application. This feature is part of Project Tech which is a project included in the [Communication and Multimedia Design](https://www.hva.nl/opleiding/communication-and-multimedia-design/communication-and-multimedia-design.html) course.
 
 To learn more about tech, checkout the [repository](https://github.com/cmda-bt/pt-course-21-22).
 
-## How was Battle Matcher created?
+## :hammer: How was Battle Matcher created?
 My goal was to create a feature in which you can swipe through cards liking and disliking people.
 
 I started off by installing Node.js and the npm cli. To get things running on a local server I installed Express and added app.js as my main backend file. I made express listen to my port of 3000 and got it going. 
@@ -27,7 +27,7 @@ When a user has been added to matches they will no longer be displayed while swi
 
 On a different page, the admin user can check out their matches in a list and remove them if needed. For demo purposes, a link is available in the menu to reset the admin users matches.
 
-## Installing this project
+## :green_book: Installing this project
 
 to install this project, clone the repository using [git](https://git-scm.com/)
 
@@ -47,7 +47,7 @@ This project uses Atlas [MongoDB](https://www.mongodb.com/) as it's database. To
 ATLAS_URI = "YOUR DATABASE LINK HERE"
 ```
 
-### Packages
+### :books: Packages
 
 Used packages are: 
 
@@ -60,7 +60,7 @@ Used packages are:
 - [mongoose](https://www.npmjs.com/package/mongoose)
 - [multer](https://www.npmjs.com/package/multer)
 
-## Usage
+## :memo: Usage
 
 ### Starting the app
 Once you've cloned the repository and installed all packages, you can start running the app.
@@ -78,10 +78,10 @@ npm run startdev
 ### Closing the app
 To close the app, press `ctrl + C`
 
-## Wiki
+## :blue_book: Wiki
 If you want to read more about this project and it's process, check out the [wiki](https://github.com/sasjakoning/blok-tech-2022/wiki)
 
-## Helpful links
+## :heart: Helpful links
 Below are some links to resources I found helpful during this project:
 
 - https://waelyasmina.medium.com/a-guide-into-using-handlebars-with-your-express-js-application-22b944443b65
@@ -100,5 +100,5 @@ Below are some links to resources I found helpful during this project:
 - https://handlebarsjs.com/
 - And many, many, many articles from https://stackoverflow.com/
 
-## License
+## :lock: License
 MIT license
