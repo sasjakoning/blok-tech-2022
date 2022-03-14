@@ -2,6 +2,9 @@
   "name": "blok-tech-2022",
   "version": "1.0.0",
   "description": "CMD blok tech 2022",
+  "engines": {
+    "node": "^8.4.1"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
