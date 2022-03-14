@@ -1,8 +1,60 @@
-{{#with likedUser}}
 <div class="matchBackground">
+
     <div class="matchPopup">
+
+        <section>
+            <figure class="matchCard">
+                <div class="pictureContainer">
+
+                    <picture>
+                        <!-- profile picture -->
+                        <source type="image/webp" srcset="/images/user-image1.webp" />
+                        <source type="image/jpg" srcset="/images/user-image1.jpg" />
+                        <img src="/images/user-image1.jpg" alt="" />
+                    </picture>
+
+                </div>
+
+
+
+
+                <figcaption>
+                    <div class="playerInfo">
+                        <h2>{{adminUser.charactername}}</h2>
+                        <h3>{{adminUser.firstname}} {{adminUser.lastname}}</h3>
+                    </div>
+
+                </figcaption>
+            </figure>
+
+            <figure class="matchCard">
+                <div class="pictureContainer">
+
+                    <picture>
+                        <!-- profile picture -->
+                        <source type="image/webp" srcset="/images/user-image1.webp" />
+                        <source type="image/jpg" srcset="/images/user-image1.jpg" />
+                        <img src="/images/user-image1.jpg" alt="" />
+                    </picture>
+
+                </div>
+
+
+
+
+                <figcaption>
+                    <div class="playerInfo">
+                        <h2>{{likedUser.charactername}}</h2>
+                        <h3>{{likedUser.firstname}} {{likedUser.lastname}}</h3>
+                    </div>
+
+                </figcaption>
+            </figure>
+        </section>
+
         <h1>Matched!</h1>
-        <p>with {{this.charactername}}</p>
+
+
         <div class="matchButtonContainer">
 
             <button class="chat">
@@ -14,6 +66,7 @@
             </button>
 
         </div>
+
     </div>
+
 </div>
-{{/with}}

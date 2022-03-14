@@ -47,7 +47,9 @@ const getUsers = async () => {
     _id: { $nin: adminMatches },
   }).lean();
 
-  return [usersList, admin];
+  const adminLeaned = await AdminUserModel.findOne({ username: "adminuser" }).lean();
+
+  return [usersList, admin, adminLeaned];
 };
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
@@ -102,7 +104,7 @@ app.post("/like/:id", async (req, res) => {
     const userCount = await UserModel.find({}).lean();
 
     // find users
-    getUsers().then(([result, admin]) => {
+    getUsers().then(([result, admin, adminLeaned]) => {
       // add to the counter everytime "like" is pressed aka: link is visited
       console.log("Adding to counter");
       counter1++;
@@ -156,6 +158,7 @@ app.post("/like/:id", async (req, res) => {
             data: result,
             likedUser: likedUser,
             isMatched: isMatched,
+            adminUser: adminLeaned
           });
         }
       } else {
