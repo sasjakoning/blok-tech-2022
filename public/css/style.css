@@ -5,12 +5,12 @@ html, * {
 }
 
 :root {
-	--background-blue: #2C2A46;
+	--background-blue: rgba(233, 228, 239, 1);
 	--background-blue-detail: #42285C;
-	--card-blue: rgba(84, 81, 119, 1);
+	--card-blue: white;
 	--default-blue-1: #686492;
 	--default-blue-2: #3D3B57;
-	--shadow: rgba(61, 59, 87, 0.3);
+	--shadow: rgba(38, 7, 63, 0.1);
 	--dropshadow: 2px 2px 4px var(--shadow);
 	--shadow-hard: rgba(12, 11, 33, 1);
 
@@ -23,9 +23,10 @@ html, * {
 	--detail-blue-background: rgba(39, 133, 254, 0.05);
 	--detail-red: rgb(255, 98, 112);
 	--detail-red-background: rgba(255, 98, 112, 0.05);
-	--detail-lightblue: #B0A8FF;
+	--detail-lightblue: #e0dcff;
 
-	--text-color: #fff;
+	--text-color: rgba(38, 7, 63, 1);
+	--text-color-alt: white;
 	--text-color-background: rgba(255, 255, 255, 0.05);
 }
 
@@ -40,7 +41,7 @@ h3, p {
 body {
 	color: var(--text-color);
 	background-color: var(--background-blue);
-	background: radial-gradient(circle, var(--background-blue-detail) 0%, var(--background-blue) 100%);
+	/* background: radial-gradient(circle, var(--background-blue-detail) 0%, var(--background-blue) 100%); */
 
 	width: 100%;
 	height: 100vh;
@@ -117,7 +118,7 @@ nav {
 
 nav.is-open {
 	transform: translateX(0);
-	background: var(--text-color);
+	background: var(--text-color-alt);
 }
 
 nav > ul {
@@ -166,6 +167,8 @@ nav > ul > li > a {
 	position: absolute;
 
 	transform-origin: bottom center;
+
+	box-shadow: var(--dropshadow);
 }
 
 .largeCard:first-of-type {
@@ -241,7 +244,7 @@ nav > ul > li > a {
 	z-index: 2;
 }
 
-.largeCard .lvl {
+.lvl {
 	width: 2.3em;
 	height: 2.3em;
 	border: 1px solid var(--detail-yellow);
@@ -261,10 +264,9 @@ nav > ul > li > a {
 
 .largeCard .distance {
 	padding: 0.3em 0.9em 0.3em 2em;
-	border: 1px solid var(--text-color);
+	border: 1px solid var(--text-color-alt);
+	color: var(--text-color-alt);
 	border-radius: 0.6em;
-
-	background-color: var(--text-color-background);
 
 	position: relative;
 
@@ -332,17 +334,15 @@ nav > ul > li > a {
 }
 
 .playerClass {
-	border: 1px solid var(--detail-blue);
-	background-color: var(--detail-blue-background);
+	background-color: var(--detail-blue);
 
-	color: var(--detail-blue);
+	color: var(--text-color-alt);
 }
 
 .playerElement {
-	border: 1px solid var(--detail-red);
-	background-color: var(--detail-red-background);
+	background-color: var(--detail-red);
 
-	color: var(--detail-red);
+	color: var(--text-color-alt);
 }
 
 /* about me in large card */
@@ -388,34 +388,11 @@ nav > ul > li > a {
 .like, .dislike {
 	background: none;
 	border: none;
-
-	border-radius: 50%;
-
-	width: 6em;
-	height: 6em;
-	line-height: 0;
 }
 
-.like img {
-	width: 4em;
-	height: 4em;
+.buttonContainer img {
+	width: 7em;
 }
-
-.dislike img {
-	width: 3em;
-	height: 3em;
-}
-
-.like {
-	border: 1px solid var(--detail-red);
-	background: var(--detail-red-background);
-}
-
-.dislike {
-	border: 1px solid var(--detail-blue);
-	background: var(--detail-blue-background);
-}
-
 
 
 /****************/
@@ -663,23 +640,7 @@ nav > ul > li > a {
 	z-index: 2;
 }
 
-.smallCard .lvl {
-	width: 1.3em;
-	height: 1.3em;
-	border: 1px solid var(--detail-yellow);
 
-	background-color: var(--detail-yellow-background);
-
-	border-radius: 50%;
-
-	text-align: center;
-	line-height: 1.3em;
-	font-size: 14px;
-
-	color: var(--detail-yellow);
-
-	box-shadow: var(--dropshadow);
-}
 
 .smallCard figcaption {
 	margin-top: -1em;
