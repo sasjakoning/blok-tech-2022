@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+require("dotenv").config();
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
 
 const handlebars = require("express-handlebars");
 
@@ -10,7 +14,6 @@ const db = require("./config/connect.js");
 const UserModel = require("./models/user");
 const AdminUserModel = require("./models/adminUser");
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 const toId = mongoose.Types.ObjectId;
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -44,7 +47,9 @@ const getUsers = async () => {
     _id: { $nin: adminMatches },
   }).lean();
 
-  return [usersList, admin];
+  const adminLeaned = await AdminUserModel.findOne({ username: "adminuser" }).lean();
+
+  return [usersList, admin, adminLeaned];
 };
 
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
@@ -63,19 +68,6 @@ app.get("/", async (req, res) => {
 
     // get users
     getUsers().then(([result, admin]) => {
-      ///////////////////////////////////////////////////////////////////////
-
-      // code to remove matches from admin database (demo purposes)
-
-      // AdminUserModel.updateMany(
-      //   {name: "admin"},
-      //   {$set: {matches: []}},
-      //   (err, affected) => {
-      //     console.log("affected", affected)
-      //   }
-      // )
-
-      ///////////////////////////////////////////////////////////////////////
 
       console.log(`counter1 is ${counter1}`);
       console.log(`counter2 is ${counter2}`);
@@ -112,7 +104,7 @@ app.post("/like/:id", async (req, res) => {
     const userCount = await UserModel.find({}).lean();
 
     // find users
-    getUsers().then(([result, admin]) => {
+    getUsers().then(([result, admin, adminLeaned]) => {
       // add to the counter everytime "like" is pressed aka: link is visited
       console.log("Adding to counter");
       counter1++;
@@ -166,6 +158,7 @@ app.post("/like/:id", async (req, res) => {
             data: result,
             likedUser: likedUser,
             isMatched: isMatched,
+            adminUser: adminLeaned
           });
         }
       } else {

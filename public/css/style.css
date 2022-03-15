@@ -53,9 +53,15 @@ body {
 body > main {
 	margin: 0 2em;
 	overflow: hidden;
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 }
 
+/**********/
 /* header */
+/**********/
 
 header {
 	display: flex;
@@ -139,13 +145,17 @@ nav > ul > li > a {
 	margin: 1em;
 }
 
-/* card */
+/**************/
+/* large card */
+/**************/
 
 .largeCard {
     background: var(--card-blue);
     height: 80%;
+	max-height: 60em;
 
 	width: calc(100% - 4em);
+	max-width: 40em;
 
     border-radius: 12px;
 
@@ -291,7 +301,7 @@ nav > ul > li > a {
 	border-radius: 50%;
 }
 
-/* figcaption */
+/* figcaption in large card */
 
 .largeCard figcaption {
 	margin: -2em 1em 0 1em;
@@ -307,7 +317,7 @@ nav > ul > li > a {
 	line-height: 1;
 }
 
-/* tags */
+/* tags in large card */
 
 .tags {
 	margin-top: 1.2em;
@@ -335,7 +345,7 @@ nav > ul > li > a {
 	color: var(--detail-red);
 }
 
-/* --- */
+/* about me in large card */
 
 .aboutMe {
 	margin-top: 2em;
@@ -365,20 +375,15 @@ nav > ul > li > a {
 	justify-content: center;
 	gap: 6em;
 
-	margin-top: 2em;
-
 	position: fixed;
-	bottom: 1em;
+	top: 86%;
 	z-index: 10;
 }
 
-.buttonContainer:first-of-type {
+/* .buttonContainer:first-of-type {
 	z-index: 11;
-}
-
-/* .buttonContainer:last-of-type {
-	display: none;
 } */
+
 
 .like, .dislike {
 	background: none;
@@ -412,9 +417,16 @@ nav > ul > li > a {
 }
 
 
+
 /****************/
 /* when matched */
 /****************/
+
+.matchTitle {
+	align-self: flex-start;
+	font-size: 2.4em;
+	margin-bottom: .5em;
+}
 
 .matchBackground {
 	width: 100vw;
@@ -444,10 +456,12 @@ nav > ul > li > a {
 
 .matchPopup {
 	width: 80%;
-	height: 60%;
-	background: red;
+	height: 50%;
 
 	z-index: 100;
+
+	display: flex;
+	flex-direction: column;
 
 	position: fixed;
 
@@ -476,6 +490,13 @@ nav > ul > li > a {
 	}
 }
 
+.matchPopup > section {
+	display: flex;
+	justify-content: center;
+
+	filter: drop-shadow(0px 0px 10px var(--detail-lightblue));
+}
+
 .matchButtonContainer {
 	width: 100%;
 	height: 100%;
@@ -489,6 +510,77 @@ nav > ul > li > a {
 .matchButtonContainer button {
 	padding: 1em;
 	border-radius: 1em;
+}
+
+.matchCard {
+    background: var(--card-blue);
+    height: 20em;
+
+	width: 48%;
+
+    border-radius: 12px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	transform-origin: bottom center;
+
+	position: relative;
+}
+
+.matchCard:first-of-type {
+	transform: rotate(-20deg) translateX(30%);
+}
+
+.matchCard:last-of-type {
+	transform: rotate(20deg) translateX(-30%);
+	border-left: 1px solid var(--background-blue);
+	border-bottom: 1px solid var(--background-blue);
+}
+
+.matchCard .pictureContainer {
+    width: 100%;
+    height: 55%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.matchCard .pictureContainer > picture {
+	width: calc(100% - 2em);
+	margin-top: 1em;
+	display: block;
+	position: relative;
+}
+
+.matchCard .pictureContainer > picture > img {
+	width: 100%;
+    height: 90%;
+    object-fit: cover;
+
+	border-radius: 12px;
+}
+
+
+.matchCard figcaption {
+	margin-top: -1em;
+	width: calc(100% - 2em);
+}
+
+.matchCard .playerInfo > h2 {
+	font-size: 20px;
+}
+
+.matchCard .playerInfo > h3 {
+	font-size: 14px;
+	line-height: 1.2;
+}
+
+.matchPopup > h1 {
+	font-size: 3.2em;
+	text-align: center;
+	margin-top: .7em;
 }
 
 /****************************/
@@ -617,3 +709,4 @@ nav > ul > li > a {
 	box-shadow: var(--dropshadow);
 
 }
+
