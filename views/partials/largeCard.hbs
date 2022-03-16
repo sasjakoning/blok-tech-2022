@@ -1,50 +1,50 @@
-{{!-- <p>{{foo}}{{bar}}</p> --}}
 
 {{#each data}}
 
 <figure class="largeCard">
-    <div class="pictureContainer">
+    <section class="pictureContainer">
 
         <picture>
-            <!-- profile picture -->
+            {{!-- profile picture --}}
             <source type="image/webp" srcset="/images/user-image1.webp" />
             <source type="image/jpg" srcset="/images/user-image1.jpg" />
             <img src="/images/user-image1.jpg" alt="" />
         </picture>
 
         <div class="sliderBtns">
+            {{!-- buttons for slider --}}
             <span></span>
             <span></span>
             <span></span>
         </div>
 
-    </div>
+    </section>
 
-    <div class="infoContainer">
+    <section class="infoContainer">
         {{!-- distance --}}
         <p class="distance">10km</p>
-        <!-- lvl -->
+        {{!-- lvl --}}
         <p class="lvl">5</p>
-    </div>
+    </section>
 
 
 
 
     <figcaption>
-        <div class="playerInfo">
+        <section class="playerInfo">
             <h2>{{this.charactername}}</h2>
             <h3>{{this.firstname}} {{this.lastname}}</h3>
-        </div>
+        </section>
 
-        <div class="tags">
+        <section class="tags">
             <p class="playerClass">Rogue</p>
             <p class="playerElement">Shadow</p>
-        </div>
+        </section>
 
-        <div class="aboutMe">
+        <section class="aboutMe">
             <h3>About me:</h3>
             <p>{{this.aboutme}}</p>
-        </div>
+        </section>
     </figcaption>
 </figure>
 

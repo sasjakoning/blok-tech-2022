@@ -5,28 +5,24 @@ html, * {
 }
 
 :root {
-	--background-blue: rgba(233, 228, 239, 1);
-	--background-blue-detail: #42285C;
-	--card-blue: white;
-	--default-blue-1: #686492;
-	--default-blue-2: #3D3B57;
+	--background: rgba(233, 228, 239, 1);
+	--card-blue: rgb(255, 255, 255);
 	--shadow: rgba(38, 7, 63, 0.1);
 	--dropshadow: 2px 2px 4px var(--shadow);
 	--shadow-hard: rgba(12, 11, 33, 1);
 
-	--detail-yellow: #FEDF6A;
+	--detail-yellow: rgb(254, 223, 106);
 	--detail-yellow-background: rgba(255, 222, 106, 0.05);
 	--detail-green: rgb(112, 207, 152);
 	--detail-green-background: rgba(112, 207, 152, 0.05);
-	
 	--detail-blue: rgb(39, 133, 254);
 	--detail-blue-background: rgba(39, 133, 254, 0.05);
 	--detail-red: rgb(255, 98, 112);
 	--detail-red-background: rgba(255, 98, 112, 0.05);
-	--detail-lightblue: #e0dcff;
+	--detail-lightblue: rgb(224, 220, 255);
 
 	--text-color: rgba(38, 7, 63, 1);
-	--text-color-alt: white;
+	--text-color-alt: rgb(255, 255, 255);
 	--text-color-background: rgba(255, 255, 255, 0.05);
 }
 
@@ -40,8 +36,7 @@ h3, p {
 
 body {
 	color: var(--text-color);
-	background-color: var(--background-blue);
-	/* background: radial-gradient(circle, var(--background-blue-detail) 0%, var(--background-blue) 100%); */
+	background-color: var(--background);
 
 	width: 100%;
 	height: 100vh;
@@ -517,8 +512,8 @@ nav > ul > li > a {
 
 .matchCard:last-of-type {
 	transform: rotate(20deg) translateX(-30%);
-	border-left: 1px solid var(--background-blue);
-	border-bottom: 1px solid var(--background-blue);
+	border-left: 1px solid var(--background);
+	border-bottom: 1px solid var(--background);
 }
 
 .matchCard .pictureContainer {

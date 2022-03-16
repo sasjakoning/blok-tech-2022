@@ -16,8 +16,6 @@ const dislikeBtn = document.querySelector(".dislike")
 
 const card = document.querySelector(".largeCard:first-of-type")
 
-console.log(card)
-
 const likeForm = document.querySelector(".form-like")
 
 likeForm.addEventListener("submit", (e) => {
@@ -26,9 +24,10 @@ likeForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     card.classList.add("cardLike")
-    setTimeout(() => {
+
+    card.addEventListener("animationend", () => {
         likeForm.submit()
-    }, 500);
+    })
 })
 
 const dislikeForm = document.querySelector(".form-dislike")
@@ -70,6 +69,7 @@ const matchBackground = document.querySelector(".matchBackground")
 const matchPopup = document.querySelector(".matchPopup")
 
 continueBtn.addEventListener("click", e => {
+    e.preventDefault()
     matchBackground.remove();
     matchPopup.remove();
 })
