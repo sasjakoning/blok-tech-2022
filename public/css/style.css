@@ -175,6 +175,48 @@ nav > ul > li > a {
 	z-index: 10;
 }
 
+.actionOverlay {
+	position: absolute;
+	z-index: 1;
+
+	width: 100%;
+	height: 100%;
+	
+	place-items: center;
+
+
+	border-radius: 12px;
+
+	display: none;
+
+	animation: fadeInOpacity .1s ease-in;
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.actionLiked {
+	display: grid;
+	background-color: var(--detail-red-background);
+	border: 4px solid var(--detail-red);
+}
+
+.actionDisliked {
+	display: grid;
+	background-color: var(--detail-blue-background);
+	border: 4px solid var(--detail-blue);
+}
+
+.actionOverlay > img {
+	width: 80%;
+}
+
 .cardLike {
 	animation: cardLike .5s ease-in-out forwards;
 }

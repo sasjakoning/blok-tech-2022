@@ -11,8 +11,10 @@ navBtn.addEventListener("click", e => {
 
 // like dislike
 
-const likeBtn = document.querySelector(".like")
-const dislikeBtn = document.querySelector(".dislike")
+// const likeBtn = document.querySelector(".like")
+// const dislikeBtn = document.querySelector(".dislike")
+const actionOverlay = document.querySelector(".actionOverlay")
+const actionOverlayImg = actionOverlay.querySelector("img")
 
 const card = document.querySelector(".largeCard:first-of-type")
 
@@ -24,6 +26,8 @@ likeForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     card.classList.add("cardLike")
+    actionOverlay.classList.add("actionLiked")
+    actionOverlayImg.src = "/images/overlayLike.svg"
 
     card.addEventListener("animationend", () => {
         likeForm.submit()
@@ -38,6 +42,9 @@ dislikeForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     card.classList.add("cardDislike")
+    actionOverlay.classList.add("actionDisliked")
+    actionOverlayImg.src = "/images/overlayDislike.svg"
+
     setTimeout(() => {
         dislikeForm.submit()
     }, 500);
@@ -73,3 +80,5 @@ continueBtn.addEventListener("click", e => {
     matchBackground.remove();
     matchPopup.remove();
 })
+
+
