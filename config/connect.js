@@ -10,7 +10,7 @@ const connectDb = async () => {
 
         console.log("db connection succesful")
     } catch (err) {
-        console.log(`faiiled to connect: ${err}`)
+        console.log(`failed to connect: ${err}`)
         throw err
     }
 }
