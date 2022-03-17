@@ -1,84 +1,71 @@
-console.log("hello")
 
-const navBtn = document.querySelector(".navBtn")
-const nav = document.querySelector("#nav")
 
-console.log(navBtn, nav)
+/*******/
+/* nav */
+/*******/
 
-navBtn.addEventListener("click", e => {
-    nav.classList.toggle("is-open")
-})
+const navBtn = document.querySelector(".navBtn");
+const nav = document.querySelector("#nav");
 
-// like dislike
+navBtn.addEventListener("click", (e) => {
+  nav.classList.toggle("is-open");
+});
 
-// const likeBtn = document.querySelector(".like")
-// const dislikeBtn = document.querySelector(".dislike")
-const actionOverlay = document.querySelector(".actionOverlay")
-const actionOverlayImg = actionOverlay.querySelector("img")
+/****************/
+/* like dislike */
+/****************/
 
-const card = document.querySelector(".largeCard:first-of-type")
+// check if on correct page
+if (document.URL.includes("like")) {
+  const actionOverlay = document.querySelector(".actionOverlay");
+  const actionOverlayImg = actionOverlay.querySelector("img");
 
-const likeForm = document.querySelector(".form-like")
+  const card = document.querySelector(".largeCard:first-of-type");
 
-likeForm.addEventListener("submit", (e) => {
-    console.log("submitted")
+  const likeForm = document.querySelector(".form-like");
 
-    e.preventDefault()
+  likeForm.addEventListener("submit", (e) => {
+    console.log("submitted");
 
-    card.classList.add("cardLike")
-    actionOverlay.classList.add("actionLiked")
-    actionOverlayImg.src = "/images/overlayLike.svg"
+    e.preventDefault();
+
+    card.classList.add("cardLike");
+    actionOverlay.classList.add("actionLiked");
+    actionOverlayImg.src = "/images/overlayLike.svg";
 
     card.addEventListener("animationend", () => {
-        likeForm.submit()
-    })
-})
+      likeForm.submit();
+    });
+  });
 
-const dislikeForm = document.querySelector(".form-dislike")
+  const dislikeForm = document.querySelector(".form-dislike");
 
-dislikeForm.addEventListener("submit", (e) => {
-    console.log("submitted")
+  dislikeForm.addEventListener("submit", (e) => {
+    console.log("submitted");
 
-    e.preventDefault()
+    e.preventDefault();
 
-    card.classList.add("cardDislike")
-    actionOverlay.classList.add("actionDisliked")
-    actionOverlayImg.src = "/images/overlayDislike.svg"
+    card.classList.add("cardDislike");
+    actionOverlay.classList.add("actionDisliked");
+    actionOverlayImg.src = "/images/overlayDislike.svg";
 
     setTimeout(() => {
-        dislikeForm.submit()
+      dislikeForm.submit();
     }, 500);
-})
+  });
 
-// likeBtn.addEventListener("click", (e) => {
-//     card.classList.add(".cardLike")
-//     console.log("yes")
-// })
+  // match popup
+  const continueBtn = document.querySelector(".continue");
+  const matchBackground = document.querySelector(".matchBackground");
+  const matchPopup = document.querySelector(".matchPopup");
 
-
-const forms = document.querySelectorAll("form")
-
-// forms.forEach((form) => {
-//     form.addEventListener("submit", (e) => {
-//         e.preventDefault();
-
-//         fetch(e.target.action, {
-//             method: "POST",
-//             headers: {"Content-Type": "application/json"},
-//         }).then((res) => {
-//             console.log("Request complete! response:", res);
-//         })
-//     })
-// })
-
-const continueBtn = document.querySelector(".continue")
-const matchBackground = document.querySelector(".matchBackground")
-const matchPopup = document.querySelector(".matchPopup")
-
-continueBtn.addEventListener("click", e => {
-    e.preventDefault()
-    matchBackground.remove();
-    matchPopup.remove();
-})
-
+  //check if element exists
+  if (matchBackground != null) {
+    continueBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      matchBackground.remove();
+      matchPopup.remove();
+    });
+  }
+}
 
