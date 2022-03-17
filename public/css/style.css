@@ -74,53 +74,6 @@ header {
 	margin: auto;
 }
 
-.navBtn {
-	position: relative;
-	margin: 1em;
-
-}
-
-.navBtn > div {
-	position: absolute;
-	width: 2em;
-	height: 2em;
-	background-image: url(../images/menu-open.svg);
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-
-	z-index: 22;
-}
-
-.navBtn > input {
-	position: absolute;
-	z-index: 21;
-	transform: scale(2);
-	opacity: 0;
-}
-
-.navBtn > input:checked ~ div {
-	background-image: url(../images/menu-close.svg);
-}
-
-.navBtn > input:checked ~ nav {
-	transform: translateX(0);
-	background: var(--text-color-alt);
-}
-
-nav {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	width: 50%;
-	background: var(--text);
-	padding: 1rem;
-	transform: translateX(-100%);
-	transition: .5s;
-
-	z-index: 20;
-}
 
 nav > ul {
 	margin-top: 5em;
