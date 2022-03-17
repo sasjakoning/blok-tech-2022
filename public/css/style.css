@@ -82,12 +82,11 @@ header {
 
 .navBtn > div {
 	position: absolute;
+
 	width: 2em;
 	height: 2em;
-	background-image: url(../images/menu-open.svg);
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
+
+	background: url(../images/menu-open.svg) no-repeat center;
 
 	z-index: 22;
 }
@@ -110,6 +109,7 @@ header {
 
 nav {
 	position: fixed;
+	
 	top: 0;
 	bottom: 0;
 	left: 0;

@@ -42,7 +42,7 @@ const getUsers = async () => {
   // find which users admin has matched
   const adminMatches = admin.matches;
 
-  // return all users exept the already matched ones
+  // return all users except the already matched ones
   const usersList = await UserModel.find({
     _id: { $nin: adminMatches },
   }).lean();
