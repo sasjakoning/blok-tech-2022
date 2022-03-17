@@ -5,28 +5,30 @@ html, * {
 }
 
 :root {
-	--background-blue: #2C2A46;
-	--background-blue-detail: #42285C;
-	--card-blue: rgba(84, 81, 119, 1);
-	--default-blue-1: #686492;
-	--default-blue-2: #3D3B57;
-	--shadow: rgba(61, 59, 87, 0.3);
+	--background: rgba(233, 228, 239, 1);
+	--card-blue: rgb(255, 255, 255);
+	--shadow: rgba(38, 7, 63, 0.1);
 	--dropshadow: 2px 2px 4px var(--shadow);
 	--shadow-hard: rgba(12, 11, 33, 1);
 
-	--detail-yellow: #FEDF6A;
+	--detail-yellow: rgb(254, 223, 106);
 	--detail-yellow-background: rgba(255, 222, 106, 0.05);
 	--detail-green: rgb(112, 207, 152);
 	--detail-green-background: rgba(112, 207, 152, 0.05);
-	
 	--detail-blue: rgb(39, 133, 254);
 	--detail-blue-background: rgba(39, 133, 254, 0.05);
 	--detail-red: rgb(255, 98, 112);
 	--detail-red-background: rgba(255, 98, 112, 0.05);
-	--detail-lightblue: #B0A8FF;
+	--detail-lightblue: rgb(224, 220, 255);
 
-	--text-color: #fff;
+	--text-color: rgba(38, 7, 63, 1);
+	--text-color-alt: rgb(255, 255, 255);
 	--text-color-background: rgba(255, 255, 255, 0.05);
+}
+
+/* fix for transitions firing on load: https://css-tricks.com/transitions-only-after-page-load/ */
+.preload * {
+	transition: none !important;
 }
 
 h2 {
@@ -39,8 +41,7 @@ h3, p {
 
 body {
 	color: var(--text-color);
-	background-color: var(--background-blue);
-	background: radial-gradient(circle, var(--background-blue-detail) 0%, var(--background-blue) 100%);
+	background-color: var(--background);
 
 	width: 100%;
 	height: 100vh;
@@ -54,6 +55,9 @@ body > main {
 	margin: 0 2em;
 	overflow: hidden;
 
+	height: 90%;
+    max-height: 70em;
+
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -66,43 +70,46 @@ body > main {
 header {
 	display: flex;
 	justify-content: space-between;
+	max-width: 60em;
+	margin: auto;
 }
 
 .navBtn {
 	position: relative;
-	z-index: 21;
-	width: 2em;
-	height: 1.5em;
-	background: none;
-	border: none;
+	margin: 1em;
 
-	margin: 16px;
 }
 
-.navBtn > span {
+.navBtn > div {
 	position: absolute;
-	display: block;
+
 	width: 2em;
-	height: 2px;
+	height: 2em;
 
-	background-color: #2785FE;
+	background: url(../images/menu-open.svg) no-repeat center;
+
+	z-index: 22;
 }
 
-.navBtn > span:first-of-type {
-	top: 0;
+.navBtn > input {
+	position: absolute;
+	z-index: 21;
+	transform: scale(2);
+	opacity: 0;
 }
 
-.navBtn > span:nth-of-type(2) {
-	top: 50%;
-	transform: translate( 0, -50%);
+.navBtn > input:checked ~ div {
+	background-image: url(../images/menu-close.svg);
 }
 
-.navBtn > span:last-of-type {
-	bottom: 0;
+.navBtn > input:checked ~ nav {
+	transform: translateX(0);
+	background: var(--text-color-alt);
 }
 
 nav {
 	position: fixed;
+	
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -110,14 +117,9 @@ nav {
 	background: var(--text);
 	padding: 1rem;
 	transform: translateX(-100%);
-	/* transition: .5s; */
+	transition: .5s;
 
 	z-index: 20;
-}
-
-nav.is-open {
-	transform: translateX(0);
-	background: var(--text-color);
 }
 
 nav > ul {
@@ -136,7 +138,7 @@ nav > ul > li > a {
 
 
 .profilePic {
-	background-color: #2785FE;
+	background-color: var(--text-color);
 	width: 2em;
 	height: 2em;
 	border-radius: 50%;
@@ -166,10 +168,54 @@ nav > ul > li > a {
 	position: absolute;
 
 	transform-origin: bottom center;
+
+	box-shadow: var(--dropshadow);
 }
 
 .largeCard:first-of-type {
 	z-index: 10;
+}
+
+.actionOverlay {
+	position: absolute;
+	z-index: 1;
+
+	width: 100%;
+	height: 100%;
+	
+	place-items: center;
+
+
+	border-radius: 12px;
+
+	display: none;
+
+	animation: fadeInOpacity .1s ease-in;
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.actionLiked {
+	display: grid;
+	background-color: var(--detail-red-background);
+	border: 4px solid var(--detail-red);
+}
+
+.actionDisliked {
+	display: grid;
+	background-color: var(--detail-blue-background);
+	border: 4px solid var(--detail-blue);
+}
+
+.actionOverlay > img {
+	width: 80%;
 }
 
 .cardLike {
@@ -241,7 +287,7 @@ nav > ul > li > a {
 	z-index: 2;
 }
 
-.largeCard .lvl {
+.lvl {
 	width: 2.3em;
 	height: 2.3em;
 	border: 1px solid var(--detail-yellow);
@@ -261,10 +307,9 @@ nav > ul > li > a {
 
 .largeCard .distance {
 	padding: 0.3em 0.9em 0.3em 2em;
-	border: 1px solid var(--text-color);
+	border: 1px solid var(--text-color-alt);
+	color: var(--text-color-alt);
 	border-radius: 0.6em;
-
-	background-color: var(--text-color-background);
 
 	position: relative;
 
@@ -332,17 +377,15 @@ nav > ul > li > a {
 }
 
 .playerClass {
-	border: 1px solid var(--detail-blue);
-	background-color: var(--detail-blue-background);
+	background-color: var(--detail-blue);
 
-	color: var(--detail-blue);
+	color: var(--text-color-alt);
 }
 
 .playerElement {
-	border: 1px solid var(--detail-red);
-	background-color: var(--detail-red-background);
+	background-color: var(--detail-red);
 
-	color: var(--detail-red);
+	color: var(--text-color-alt);
 }
 
 /* about me in large card */
@@ -374,48 +417,20 @@ nav > ul > li > a {
 	display: flex;
 	justify-content: center;
 	gap: 6em;
+	margin-top: auto;
 
-	position: fixed;
-	top: 86%;
 	z-index: 10;
 }
-
-/* .buttonContainer:first-of-type {
-	z-index: 11;
-} */
 
 
 .like, .dislike {
 	background: none;
 	border: none;
-
-	border-radius: 50%;
-
-	width: 6em;
-	height: 6em;
-	line-height: 0;
 }
 
-.like img {
-	width: 4em;
-	height: 4em;
+.buttonContainer img {
+	width: 7em;
 }
-
-.dislike img {
-	width: 3em;
-	height: 3em;
-}
-
-.like {
-	border: 1px solid var(--detail-red);
-	background: var(--detail-red-background);
-}
-
-.dislike {
-	border: 1px solid var(--detail-blue);
-	background: var(--detail-blue-background);
-}
-
 
 
 /****************/
@@ -425,7 +440,10 @@ nav > ul > li > a {
 .matchTitle {
 	align-self: flex-start;
 	font-size: 2.4em;
-	margin-bottom: .5em;
+	margin: 0 auto .5em auto;
+	width: 100%;
+	max-width: 17em;
+	display: block;
 }
 
 .matchBackground {
@@ -456,7 +474,9 @@ nav > ul > li > a {
 
 .matchPopup {
 	width: 80%;
+	max-width: 40em;
 	height: 50%;
+	max-height: 40em;
 
 	z-index: 100;
 
@@ -535,8 +555,8 @@ nav > ul > li > a {
 
 .matchCard:last-of-type {
 	transform: rotate(20deg) translateX(-30%);
-	border-left: 1px solid var(--background-blue);
-	border-bottom: 1px solid var(--background-blue);
+	border-left: 1px solid var(--background);
+	border-bottom: 1px solid var(--background);
 }
 
 .matchCard .pictureContainer {
@@ -594,6 +614,8 @@ nav > ul > li > a {
 	gap: 1em;
 
 	width: 100%;
+	max-width: 40em;
+	margin: auto;
 	height: 100%;
 }
 
@@ -602,6 +624,7 @@ nav > ul > li > a {
     height: 27em;
 
 	width: 48%;
+	max-width: 23em;
 
     border-radius: 12px;
 
@@ -663,23 +686,7 @@ nav > ul > li > a {
 	z-index: 2;
 }
 
-.smallCard .lvl {
-	width: 1.3em;
-	height: 1.3em;
-	border: 1px solid var(--detail-yellow);
 
-	background-color: var(--detail-yellow-background);
-
-	border-radius: 50%;
-
-	text-align: center;
-	line-height: 1.3em;
-	font-size: 14px;
-
-	color: var(--detail-yellow);
-
-	box-shadow: var(--dropshadow);
-}
 
 .smallCard figcaption {
 	margin-top: -1em;
@@ -702,9 +709,10 @@ nav > ul > li > a {
 
 	width: 100%;
 
-	background-color: var(--detail-yellow-background);
-	border: 1px solid var(--detail-yellow);
-	color: var(--text-color);
+	border: none;
+
+	background-color: var(--detail-blue);
+	color: var(--text-color-alt);
 
 	box-shadow: var(--dropshadow);
 

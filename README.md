@@ -1,4 +1,10 @@
-# :sparkles: Battle Matcher
+
+![HTML badge](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS badge](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JS badge](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E) ![MongoDB badge](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+
+![Battle Matcher logo](./public/images/battlematcher.png)
+
+![Mockup of app](./public/images/mockup.png)
+
 Tired of Tinder? Battle Matcher combines the struggle of matching with the fun of gaming! You can match with people based on their character and skills and fight together to gain higher levels and fight greater enemies.
 
 If you've ever had trouble starting conversations, this is the app for you.

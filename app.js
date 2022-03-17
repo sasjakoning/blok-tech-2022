@@ -42,12 +42,14 @@ const getUsers = async () => {
   // find which users admin has matched
   const adminMatches = admin.matches;
 
-  // return all users exept the already matched ones
+  // return all users except the already matched ones
   const usersList = await UserModel.find({
     _id: { $nin: adminMatches },
   }).lean();
 
-  const adminLeaned = await AdminUserModel.findOne({ username: "adminuser" }).lean();
+  const adminLeaned = await AdminUserModel.findOne({
+    username: "adminuser",
+  }).lean();
 
   return [usersList, admin, adminLeaned];
 };
@@ -68,7 +70,6 @@ app.get("/", async (req, res) => {
 
     // get users
     getUsers().then(([result, admin]) => {
-
       console.log(`counter1 is ${counter1}`);
       console.log(`counter2 is ${counter2}`);
 
@@ -158,7 +159,7 @@ app.post("/like/:id", async (req, res) => {
             data: result,
             likedUser: likedUser,
             isMatched: isMatched,
-            adminUser: adminLeaned
+            adminUser: adminLeaned,
           });
         }
       } else {
@@ -299,7 +300,6 @@ app.post("/api/user", (req, res) => {
 
 app.get("/reset", async (req, res) => {
   try {
-
     AdminUserModel.updateMany(
       { name: "admin" },
       { $set: { matches: [] } },
@@ -309,9 +309,8 @@ app.get("/reset", async (req, res) => {
     );
 
     res.render("reset", {
-      layout: "index"
+      layout: "index",
     });
-    
   } catch (err) {
     console.log(err);
   }

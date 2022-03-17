@@ -1,24 +1,22 @@
 <header>
-    <button class="navBtn">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-    <nav id="nav">
-        <ul>
-            <li>
-                <a href="/">Start Swiping</a>
-            </li>
-            <li>
-                <a href="/matches">View Matches</a>
-            </li>
-            <li>
-                <a href="/reset">Reset Admin User (dev)</a>
-            </li>
-            {{!-- <li>
-                <a href="/create-user">make user</a>
-            </li> --}}
-        </ul>
-    </nav>
+    <label class="navBtn" for="navCheckbox">
+        <input type="checkbox" id="navCheckbox"></input>
+        {{!-- open close icon in div --}}
+        <div></div>
+        <nav class="slideIn">
+            <ul>
+                <li>
+                    <a href="/">Start Swiping</a>
+                </li>
+                <li>
+                    <a href="/matches">View Matches</a>
+                </li>
+                <li>
+                    <a href="/reset">Reset Admin User (dev)</a>
+                </li>
+            </ul>
+        </nav>
+    </label>
+
     <a class="profilePic" href="#"></a>
 </header>
