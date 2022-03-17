@@ -1,9 +1,8 @@
 // fix for transitions firing on load
 window.addEventListener("load", () => {
-  document.querySelector("body").classList.remove("preload")
-  console.log("removed preload")
-})
-
+  document.querySelector("body").classList.remove("preload");
+  console.log("removed preload");
+});
 
 /****************/
 /* like dislike */
@@ -62,4 +61,3 @@ if (document.URL.includes("like")) {
     });
   }
 }
-
