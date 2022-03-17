@@ -1,15 +1,9 @@
+// fix for transitions firing on load
+window.addEventListener("load", () => {
+  document.querySelector("body").classList.remove("preload")
+  console.log("removed preload")
+})
 
-
-/*******/
-/* nav */
-/*******/
-
-const navBtn = document.querySelector(".navBtn");
-const nav = document.querySelector("#nav");
-
-navBtn.addEventListener("click", (e) => {
-  nav.classList.toggle("is-open");
-});
 
 /****************/
 /* like dislike */

@@ -26,6 +26,11 @@ html, * {
 	--text-color-background: rgba(255, 255, 255, 0.05);
 }
 
+/* fix for transitions firing on load: https://css-tricks.com/transitions-only-after-page-load/ */
+.preload * {
+	transition: none !important;
+}
+
 h2 {
 	font-size: 18px;
 }
@@ -71,35 +76,36 @@ header {
 
 .navBtn {
 	position: relative;
-	z-index: 21;
-	width: 2em;
-	height: 1.5em;
-	background: none;
-	border: none;
+	margin: 1em;
 
-	margin: 16px;
 }
 
-.navBtn > span {
+.navBtn > div {
 	position: absolute;
-	display: block;
 	width: 2em;
-	height: 2px;
+	height: 2em;
+	background-image: url(../images/menu-open.svg);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 
-	background-color: #2785FE;
+	z-index: 22;
 }
 
-.navBtn > span:first-of-type {
-	top: 0;
+.navBtn > input {
+	position: absolute;
+	z-index: 21;
+	transform: scale(2);
+	opacity: 0;
 }
 
-.navBtn > span:nth-of-type(2) {
-	top: 50%;
-	transform: translate( 0, -50%);
+.navBtn > input:checked ~ div {
+	background-image: url(../images/menu-close.svg);
 }
 
-.navBtn > span:last-of-type {
-	bottom: 0;
+.navBtn > input:checked ~ nav {
+	transform: translateX(0);
+	background: var(--text-color-alt);
 }
 
 nav {
@@ -111,14 +117,9 @@ nav {
 	background: var(--text);
 	padding: 1rem;
 	transform: translateX(-100%);
-	/* transition: .5s; */
+	transition: .5s;
 
 	z-index: 20;
-}
-
-nav.is-open {
-	transform: translateX(0);
-	background: var(--text-color-alt);
 }
 
 nav > ul {
@@ -137,7 +138,7 @@ nav > ul > li > a {
 
 
 .profilePic {
-	background-color: #2785FE;
+	background-color: var(--text-color);
 	width: 2em;
 	height: 2em;
 	border-radius: 50%;
