@@ -43,7 +43,7 @@ dislikeForm.addEventListener("submit", (e) => {
   actionOverlayImg.src = "/images/overlayDislike.svg";
 
   card.addEventListener("animationend", () => {
-    likeForm.submit();
+    dislikeForm.submit();
   });
 });
 
