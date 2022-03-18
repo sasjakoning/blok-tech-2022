@@ -42,9 +42,9 @@ dislikeForm.addEventListener("submit", (e) => {
   actionOverlay.classList.add("actionDisliked");
   actionOverlayImg.src = "/images/overlayDislike.svg";
 
-  setTimeout(() => {
+  card.addEventListener("animationend", () => {
     dislikeForm.submit();
-  }, 500);
+  });
 });
 
 // match popup
