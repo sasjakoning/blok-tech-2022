@@ -58,6 +58,27 @@ const getUsers = async () => {
   return [usersList, admin, adminLeaned];
 };
 
+// quotes API
+const getQuote = async () => {
+  let randomQuotes = [];
+
+  // get 2 quotes and push to randomQuotes
+  for (let i = 0; i < 2; i++) {
+    let quote = await fetch(
+      "https://api.quotable.io/random"
+    );
+
+    quote = await quote.json();
+
+    randomQuotes.push(quote.content);
+  }
+
+  console.log(randomQuotes)
+
+
+  return randomQuotes;
+};
+
 // to count the amount of times the page has been visited by the user. this to serve the correct object from array
 let counter1 = 0;
 let counter2 = 2;
@@ -68,48 +89,34 @@ let counter2 = 2;
 
 app.get("/", async (req, res) => {
   try {
-    async function getQuote() {
-      let quote = await fetch(
-        "https://getpickuplines.herokuapp.com/lines/random"
-      );
-      return quote.json();
-    }
+    getQuote().then((randomQuotes) => {
 
-    let randomQuotes = [];
+      counter1 = 0;
+      counter2 = 2;
+      // for demo purposes, counter is always reset when on start page
 
-    for (let i = 0; i < 2; i++) {
-      getQuote().then((quote) => {
-        randomQuotes.push(quote.line);
-        // pushing quotes to objects done with help from Maijla :)
+      // get users
+      getUsers().then(([result, admin]) => {
+        console.log(`counter1 is ${counter1}`);
+        console.log(`counter2 is ${counter2}`);
 
-        if (randomQuotes.length === 2) {
-          console.log(randomQuotes);
+        // only return two users from the array
+        result = result.slice(counter1, counter2);
 
-          counter1 = 0;
-          counter2 = 2;
-          // for demo purposes, counter is always reset when on start page
+        // add the quote to the user documents
+        result.forEach((element) => {
+          let i = result.indexOf(element);
+          element.quote = randomQuotes[i];
+        });
 
-          // get users
-          getUsers().then(([result, admin]) => {
-            console.log(`counter1 is ${counter1}`);
-            console.log(`counter2 is ${counter2}`);
 
-            // only return two users from the array
-            result = result.slice(counter1, counter2);
-
-            result.forEach(element => {
-              element.quote = randomQuotes[i]
-            });
-
-            // send result to handlebars
-            res.render("main", {
-              layout: "index",
-              data: result,
-            });
-          });
-        }
+        // send result to handlebars
+        res.render("main", {
+          layout: "index",
+          data: result,
+        });
       });
-    }
+    });
   } catch (err) {
     console.log(err);
   }
@@ -123,16 +130,6 @@ app.post("/like/:id", async (req, res) => {
   console.log("like");
 
   try {
-    async function getQuote() {
-      let quote = await fetch(
-        "https://getpickuplines.herokuapp.com/lines/random"
-      );
-      return quote.json();
-    }
-
-    let randomQuotes = [];
-
-    
     // turns id into ObjectId instead of a string with number
     req.params.id = toId(req.params.id);
 
@@ -142,89 +139,81 @@ app.post("/like/:id", async (req, res) => {
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    for (let i = 0; i < 2; i++) {
-      getQuote().then((quote) => {
-        randomQuotes.push(quote.line);
-        // pushing quotes to objects done with help from Maijla :)
+    getQuote().then((randomQuotes) => {
 
-        if (randomQuotes.length === 2) {
-          console.log(randomQuotes);
-
-          // find users
-          getUsers().then(([result, admin, adminLeaned]) => {
-            // add to the counter everytime "like" is pressed aka: link is visited
-            console.log("Adding to counter");
-            counter1++;
-            counter2++;
-
-            console.log(`counter1 is ${counter1}`);
-            console.log(`counter2 is ${counter2}`);
-
-            // only send 2 users
-            result = result.slice(counter1, counter2);
-
-            result.forEach(element => {
-              element.quote = randomQuotes[i]
-            });
-
-            console.log(userCount.length);
-
-            // if the counter goes beyond the amount of users in array, reset back to original
-            if (counter2 == userCount.length) {
-              counter1 = 0;
-              counter2 = 2;
-            }
-
-            // add likeduser to likes array of admin (Not included in this feature)
-            // admin.likes.push(likedUser)
-            // admin.save();
-
-            // check if the liked user has own likes as well
-            if (likedUser.likes[0]) {
-              // if true, check if the like in the likedUser is equal to the admin user's id
-              if (likedUser.likes[0].equals(admin._id)) {
-                console.log("Match!");
-
-                let isMatched = true;
-
-                // fix for database update which offsets the array
-                console.log("pulling from counter");
-                counter1--;
-                counter2--;
-
-                if (admin.matches.includes(likedUser._id)) {
-                  console.log("admin matches includes the id of liked user");
-                } else {
-                  console.log("admin matches does not yet include this liked user");
-
-                  console.log("adding liked user to database");
-
-                  admin.matches.push(likedUser);
-                  admin.save();
-                }
-
-                // let handlebars know that there's a match, will insert a new template with a popup
-                res.render("main", {
-                  layout: "index",
-                  data: result,
-                  likedUser: likedUser,
-                  isMatched: isMatched,
-                  adminUser: adminLeaned,
-                });
-              }
+      // find users
+      getUsers().then(([result, admin, adminLeaned]) => {
+        // add to the counter everytime "like" is pressed aka: link is visited
+        console.log("Adding to counter");
+        counter1++;
+        counter2++;
+  
+        console.log(`counter1 is ${counter1}`);
+        console.log(`counter2 is ${counter2}`);
+  
+        // only send 2 users
+        result = result.slice(counter1, counter2);
+  
+        result.forEach((element) => {
+          let i = result.indexOf(element);
+          element.quote = randomQuotes[i];
+        });
+  
+        console.log(userCount.length);
+  
+        // if the counter goes beyond the amount of users in array, reset back to original
+        if (counter2 == userCount.length) {
+          counter1 = 0;
+          counter2 = 2;
+        }
+  
+        // add likeduser to likes array of admin (Not included in this feature)
+        // admin.likes.push(likedUser)
+        // admin.save();
+  
+        // check if the liked user has own likes as well
+        if (likedUser.likes[0]) {
+          // if true, check if the like in the likedUser is equal to the admin user's id
+          if (likedUser.likes[0].equals(admin._id)) {
+            console.log("Match!");
+  
+            let isMatched = true;
+  
+            // fix for database update which offsets the array
+            console.log("pulling from counter");
+            counter1--;
+            counter2--;
+  
+            if (admin.matches.includes(likedUser._id)) {
+              console.log("admin matches includes the id of liked user");
             } else {
-              console.log("likedUser does not have likes");
-
-              res.render("main", {
-                layout: "index",
-                data: result,
-              });
+              console.log("admin matches does not yet include this liked user");
+  
+              console.log("adding liked user to database");
+  
+              admin.matches.push(likedUser);
+              admin.save();
             }
+  
+            // let handlebars know that there's a match, will insert a new template with a popup
+            res.render("main", {
+              layout: "index",
+              data: result,
+              likedUser: likedUser,
+              isMatched: isMatched,
+              adminUser: adminLeaned,
+            });
+          }
+        } else {
+          console.log("likedUser does not have likes");
+  
+          res.render("main", {
+            layout: "index",
+            data: result,
           });
         }
       });
-    }      
-    
+    });
   } catch (err) {
     console.log(err);
   }
@@ -238,15 +227,6 @@ app.post("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
   try {
-    async function getQuote() {
-      let quote = await fetch(
-        "https://getpickuplines.herokuapp.com/lines/random"
-      );
-      return quote.json();
-    }
-
-    let randomQuotes = [];
-
     // turns id into ObjectId instead of a string with number
     req.params.id = toId(req.params.id);
 
@@ -256,50 +236,42 @@ app.post("/dislike/:id", async (req, res) => {
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    for (let i = 0; i < 2; i++) {
-      getQuote().then((quote) => {
-        randomQuotes.push(quote.line);
-        // pushing quotes to objects done with help from Maijla :)
+    getQuote().then((randomQuotes) => {
+      // find users
+      getUsers().then(([result, admin]) => {
+        // add to the counter everytime "dislike" is pressed aka: link is visited
+        counter1++;
+        counter2++;
 
-        if (randomQuotes.length === 2) {
-          console.log(randomQuotes);
+        console.log(`counter1 is ${counter1}`);
+        console.log(`counter2 is ${counter2}`);
 
-              // find users
-            getUsers().then(([result, admin]) => {
-              // add to the counter everytime "dislike" is pressed aka: link is visited
-              counter1++;
-              counter2++;
+        // only send 2 users
+        result = result.slice(counter1, counter2);
 
-              console.log(`counter1 is ${counter1}`);
-              console.log(`counter2 is ${counter2}`);
+        result.forEach((element) => {
+          let i = result.indexOf(element);
+          element.quote = randomQuotes[i];
+        });
 
-              // only send 2 users
-              result = result.slice(counter1, counter2);
+        console.log(userCount.length);
 
-              result.forEach(element => {
-                element.quote = randomQuotes[i]
-              });
+        // if the counter goes beyond the amount of users in array, reset back to original
+        if (counter2 == userCount.length) {
+          counter1 = 0;
+          counter2 = 2;
+        }
 
-              console.log(userCount.length);
+        // add likeduser to likes array of admin (Not included in this feature)
+        // admin.dislikes.push(likedUser)
+        // admin.save();
 
-              // if the counter goes beyond the amount of users in array, reset back to original
-              if (counter2 == userCount.length) {
-                counter1 = 0;
-                counter2 = 2;
-              }
-
-              // add likeduser to likes array of admin (Not included in this feature)
-              // admin.dislikes.push(likedUser)
-              // admin.save();
-
-              res.render("main", {
-                layout: "index",
-                data: result,
-              });
-            });
-          }
-      })
-    }
+        res.render("main", {
+          layout: "index",
+          data: result,
+        });
+      });
+    });
   } catch (err) {
     console.log(err);
   }
