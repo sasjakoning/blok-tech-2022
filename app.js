@@ -58,22 +58,23 @@ const getUsers = async () => {
   return [usersList, admin, adminLeaned];
 };
 
-// pickuplines API
+// quotes API
 const getQuote = async () => {
   let randomQuotes = [];
 
-  // get 2 pickup lines and push to randomQuotes
+  // get 2 quotes and push to randomQuotes
   for (let i = 0; i < 2; i++) {
     let quote = await fetch(
-      "https://getpickuplines.herokuapp.com/lines/random"
+      "https://api.quotable.io/random"
     );
 
     quote = await quote.json();
 
-    randomQuotes.push(quote.line);
+    randomQuotes.push(quote.content);
   }
 
   console.log(randomQuotes)
+
 
   return randomQuotes;
 };
@@ -139,60 +140,61 @@ app.post("/like/:id", async (req, res) => {
     const userCount = await UserModel.find({}).lean();
 
     getQuote().then((randomQuotes) => {
+
       // find users
       getUsers().then(([result, admin, adminLeaned]) => {
         // add to the counter everytime "like" is pressed aka: link is visited
         console.log("Adding to counter");
         counter1++;
         counter2++;
-
+  
         console.log(`counter1 is ${counter1}`);
         console.log(`counter2 is ${counter2}`);
-
+  
         // only send 2 users
         result = result.slice(counter1, counter2);
-
+  
         result.forEach((element) => {
           let i = result.indexOf(element);
           element.quote = randomQuotes[i];
         });
-
+  
         console.log(userCount.length);
-
+  
         // if the counter goes beyond the amount of users in array, reset back to original
         if (counter2 == userCount.length) {
           counter1 = 0;
           counter2 = 2;
         }
-
+  
         // add likeduser to likes array of admin (Not included in this feature)
         // admin.likes.push(likedUser)
         // admin.save();
-
+  
         // check if the liked user has own likes as well
         if (likedUser.likes[0]) {
           // if true, check if the like in the likedUser is equal to the admin user's id
           if (likedUser.likes[0].equals(admin._id)) {
             console.log("Match!");
-
+  
             let isMatched = true;
-
+  
             // fix for database update which offsets the array
             console.log("pulling from counter");
             counter1--;
             counter2--;
-
+  
             if (admin.matches.includes(likedUser._id)) {
               console.log("admin matches includes the id of liked user");
             } else {
               console.log("admin matches does not yet include this liked user");
-
+  
               console.log("adding liked user to database");
-
+  
               admin.matches.push(likedUser);
               admin.save();
             }
-
+  
             // let handlebars know that there's a match, will insert a new template with a popup
             res.render("main", {
               layout: "index",
@@ -204,7 +206,7 @@ app.post("/like/:id", async (req, res) => {
           }
         } else {
           console.log("likedUser does not have likes");
-
+  
           res.render("main", {
             layout: "index",
             data: result,
