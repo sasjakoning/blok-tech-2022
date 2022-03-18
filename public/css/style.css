@@ -430,7 +430,7 @@ nav > ul > li > a {
 }
 
 .playerClass {
-	background-color: var(--detail-blue);
+	background-color: var(--detail-green);
 
 	color: var(--text-color-alt);
 }
