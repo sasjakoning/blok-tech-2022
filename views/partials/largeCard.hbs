@@ -1,55 +1,65 @@
-
 {{#each data}}
 
-<figure class="largeCard">
-    <section class="actionOverlay">
-        <img src="/images/overlayLike.svg" alt="">
-    </section>
+<label class="flipContainer" for="flip">
+    <input class="flipBtn" id="flip" type="checkbox">
 
-    <section class="pictureContainer">
+    <article class="flipCard">
 
-        <picture>
-            {{!-- profile picture --}}
-            <source type="image/webp" srcset="/images/user-image1.webp" />
-            <source type="image/jpg" srcset="/images/user-image1.jpg" />
-            <img src="/images/user-image1.jpg" alt="" />
-        </picture>
+        <figure class="largeCard">
+            <section class="actionOverlay">
+                <img src="/images/overlayLike.svg" alt="">
+            </section>
 
-        <div class="sliderBtns">
-            {{!-- buttons for slider --}}
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+            <section class="pictureContainer">
 
-    </section>
+                <picture>
+                    {{!-- profile picture --}}
+                    <source type="image/webp" srcset="/images/user-image1.webp" />
+                    <source type="image/jpg" srcset="/images/user-image1.jpg" />
+                    <img src="/images/user-image1.jpg" alt="" />
+                </picture>
 
-    <section class="infoContainer">
-        {{!-- distance --}}
-        <p class="distance">10km</p>
-        {{!-- lvl --}}
-        <p class="lvl">5</p>
-    </section>
+                <div class="sliderBtns">
+                    {{!-- buttons for slider --}}
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
 
+            </section>
 
+            <section class="infoContainer">
+                {{!-- distance --}}
+                <p class="distance">10km</p>
+                {{!-- lvl --}}
+                <p class="lvl">5</p>
+            </section>
 
+            <figcaption>
+                <section class="playerInfo">
+                    <h2>{{this.charactername}}</h2>
+                    <h3>{{this.firstname}} {{this.lastname}}</h3>
+                </section>
 
-    <figcaption>
-        <section class="playerInfo">
-            <h2>{{this.charactername}}</h2>
-            <h3>{{this.firstname}} {{this.lastname}}</h3>
+                <section class="tags">
+                    <p class="playerClass">Rogue</p>
+                    <p class="playerElement">Shadow</p>
+                </section>
+
+                <section class="aboutMe">
+                    <h3>About me:</h3>
+                    <p>{{this.aboutme}}</p>
+                </section>
+            </figcaption>
+        </figure>
+        <section class="cardBackside">
+            backside
         </section>
 
-        <section class="tags">
-            <p class="playerClass">Rogue</p>
-            <p class="playerElement">Shadow</p>
-        </section>
 
-        <section class="aboutMe">
-            <h3>About me:</h3>
-            <p>{{this.aboutme}}</p>
-        </section>
-    </figcaption>
-</figure>
+    </article>
+
+
+</label>
 
 {{/each}}
