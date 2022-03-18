@@ -73,6 +73,8 @@ const getQuote = async () => {
     randomQuotes.push(quote.line);
   }
 
+  console.log(randomQuotes)
+
   return randomQuotes;
 };
 
