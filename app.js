@@ -16,6 +16,10 @@ const AdminUserModel = require("./models/adminUser");
 const mongoose = require("mongoose");
 const toId = mongoose.Types.ObjectId;
 
+// regular require is not supported for node-fetch
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.engine(
@@ -64,24 +68,48 @@ let counter2 = 2;
 
 app.get("/", async (req, res) => {
   try {
-    counter1 = 0;
-    counter2 = 2;
-    // for demo purposes, counter is always reset when on start page
+    async function getQuote() {
+      let quote = await fetch(
+        "https://getpickuplines.herokuapp.com/lines/random"
+      );
+      return quote.json();
+    }
 
-    // get users
-    getUsers().then(([result, admin]) => {
-      console.log(`counter1 is ${counter1}`);
-      console.log(`counter2 is ${counter2}`);
+    let randomQuotes = [];
 
-      // only return two users from the array
-      result = result.slice(counter1, counter2);
+    for (let i = 0; i < 2; i++) {
+      getQuote().then((quote) => {
+        randomQuotes.push(quote.line);
+        // pushing quotes to objects done with help from Maijla :)
 
-      // send result to handlebars
-      res.render("main", {
-        layout: "index",
-        data: result,
+        if (randomQuotes.length === 2) {
+          console.log(randomQuotes);
+
+          counter1 = 0;
+          counter2 = 2;
+          // for demo purposes, counter is always reset when on start page
+
+          // get users
+          getUsers().then(([result, admin]) => {
+            console.log(`counter1 is ${counter1}`);
+            console.log(`counter2 is ${counter2}`);
+
+            // only return two users from the array
+            result = result.slice(counter1, counter2);
+
+            result.forEach(element => {
+              element.quote = randomQuotes[i]
+            });
+
+            // send result to handlebars
+            res.render("main", {
+              layout: "index",
+              data: result,
+            });
+          });
+        }
       });
-    });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -95,6 +123,16 @@ app.post("/like/:id", async (req, res) => {
   console.log("like");
 
   try {
+    async function getQuote() {
+      let quote = await fetch(
+        "https://getpickuplines.herokuapp.com/lines/random"
+      );
+      return quote.json();
+    }
+
+    let randomQuotes = [];
+
+    
     // turns id into ObjectId instead of a string with number
     req.params.id = toId(req.params.id);
 
@@ -104,73 +142,89 @@ app.post("/like/:id", async (req, res) => {
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    // find users
-    getUsers().then(([result, admin, adminLeaned]) => {
-      // add to the counter everytime "like" is pressed aka: link is visited
-      console.log("Adding to counter");
-      counter1++;
-      counter2++;
+    for (let i = 0; i < 2; i++) {
+      getQuote().then((quote) => {
+        randomQuotes.push(quote.line);
+        // pushing quotes to objects done with help from Maijla :)
 
-      console.log(`counter1 is ${counter1}`);
-      console.log(`counter2 is ${counter2}`);
+        if (randomQuotes.length === 2) {
+          console.log(randomQuotes);
 
-      // only send 2 users
-      result = result.slice(counter1, counter2);
+          // find users
+          getUsers().then(([result, admin, adminLeaned]) => {
+            // add to the counter everytime "like" is pressed aka: link is visited
+            console.log("Adding to counter");
+            counter1++;
+            counter2++;
 
-      console.log(userCount.length);
+            console.log(`counter1 is ${counter1}`);
+            console.log(`counter2 is ${counter2}`);
 
-      // if the counter goes beyond the amount of users in array, reset back to original
-      if (counter2 == userCount.length) {
-        counter1 = 0;
-        counter2 = 2;
-      }
+            // only send 2 users
+            result = result.slice(counter1, counter2);
 
-      // add likeduser to likes array of admin (Not included in this feature)
-      // admin.likes.push(likedUser)
-      // admin.save();
+            result.forEach(element => {
+              element.quote = randomQuotes[i]
+            });
 
-      // check if the liked user has own likes as well
-      if (likedUser.likes[0]) {
-        // if true, check if the like in the likedUser is equal to the admin user's id
-        if (likedUser.likes[0].equals(admin._id)) {
-          console.log("Match!");
+            console.log(userCount.length);
 
-          let isMatched = true;
+            // if the counter goes beyond the amount of users in array, reset back to original
+            if (counter2 == userCount.length) {
+              counter1 = 0;
+              counter2 = 2;
+            }
 
-          // fix for database update which offsets the array
-          console.log("pulling from counter");
-          counter1--;
-          counter2--;
+            // add likeduser to likes array of admin (Not included in this feature)
+            // admin.likes.push(likedUser)
+            // admin.save();
 
-          if (admin.matches.includes(likedUser._id)) {
-            console.log("admin matches includes the id of liked user");
-          } else {
-            console.log("admin matches does not yet include this liked user");
+            // check if the liked user has own likes as well
+            if (likedUser.likes[0]) {
+              // if true, check if the like in the likedUser is equal to the admin user's id
+              if (likedUser.likes[0].equals(admin._id)) {
+                console.log("Match!");
 
-            console.log("adding liked user to database");
+                let isMatched = true;
 
-            admin.matches.push(likedUser);
-            admin.save();
-          }
+                // fix for database update which offsets the array
+                console.log("pulling from counter");
+                counter1--;
+                counter2--;
 
-          // let handlebars know that there's a match, will insert a new template with a popup
-          res.render("main", {
-            layout: "index",
-            data: result,
-            likedUser: likedUser,
-            isMatched: isMatched,
-            adminUser: adminLeaned,
+                if (admin.matches.includes(likedUser._id)) {
+                  console.log("admin matches includes the id of liked user");
+                } else {
+                  console.log("admin matches does not yet include this liked user");
+
+                  console.log("adding liked user to database");
+
+                  admin.matches.push(likedUser);
+                  admin.save();
+                }
+
+                // let handlebars know that there's a match, will insert a new template with a popup
+                res.render("main", {
+                  layout: "index",
+                  data: result,
+                  likedUser: likedUser,
+                  isMatched: isMatched,
+                  adminUser: adminLeaned,
+                });
+              }
+            } else {
+              console.log("likedUser does not have likes");
+
+              res.render("main", {
+                layout: "index",
+                data: result,
+              });
+            }
           });
         }
-      } else {
-        console.log("likedUser does not have likes");
-
-        res.render("main", {
-          layout: "index",
-          data: result,
-        });
-      }
-    });
+      });
+    }      
+    
   } catch (err) {
     console.log(err);
   }
@@ -184,6 +238,15 @@ app.post("/dislike/:id", async (req, res) => {
   console.log("dislike");
 
   try {
+    async function getQuote() {
+      let quote = await fetch(
+        "https://getpickuplines.herokuapp.com/lines/random"
+      );
+      return quote.json();
+    }
+
+    let randomQuotes = [];
+
     // turns id into ObjectId instead of a string with number
     req.params.id = toId(req.params.id);
 
@@ -193,35 +256,50 @@ app.post("/dislike/:id", async (req, res) => {
     // put all users in variable to check length
     const userCount = await UserModel.find({}).lean();
 
-    // find users
-    getUsers().then(([result, admin]) => {
-      // add to the counter everytime "dislike" is pressed aka: link is visited
-      counter1++;
-      counter2++;
+    for (let i = 0; i < 2; i++) {
+      getQuote().then((quote) => {
+        randomQuotes.push(quote.line);
+        // pushing quotes to objects done with help from Maijla :)
 
-      console.log(`counter1 is ${counter1}`);
-      console.log(`counter2 is ${counter2}`);
+        if (randomQuotes.length === 2) {
+          console.log(randomQuotes);
 
-      // only send 2 users
-      result = result.slice(counter1, counter2);
+              // find users
+            getUsers().then(([result, admin]) => {
+              // add to the counter everytime "dislike" is pressed aka: link is visited
+              counter1++;
+              counter2++;
 
-      console.log(userCount.length);
+              console.log(`counter1 is ${counter1}`);
+              console.log(`counter2 is ${counter2}`);
 
-      // if the counter goes beyond the amount of users in array, reset back to original
-      if (counter2 == userCount.length) {
-        counter1 = 0;
-        counter2 = 2;
-      }
+              // only send 2 users
+              result = result.slice(counter1, counter2);
 
-      // add likeduser to likes array of admin (Not included in this feature)
-      // admin.dislikes.push(likedUser)
-      // admin.save();
+              result.forEach(element => {
+                element.quote = randomQuotes[i]
+              });
 
-      res.render("main", {
-        layout: "index",
-        data: result,
-      });
-    });
+              console.log(userCount.length);
+
+              // if the counter goes beyond the amount of users in array, reset back to original
+              if (counter2 == userCount.length) {
+                counter1 = 0;
+                counter2 = 2;
+              }
+
+              // add likeduser to likes array of admin (Not included in this feature)
+              // admin.dislikes.push(likedUser)
+              // admin.save();
+
+              res.render("main", {
+                layout: "index",
+                data: result,
+              });
+            });
+          }
+      })
+    }
   } catch (err) {
     console.log(err);
   }
