@@ -180,6 +180,7 @@ nav > ul > li > a {
 
 	transition: transform 0.8s;
 	transform-style: preserve-3d;
+	backface-visibility: hidden;
 }
 
 
